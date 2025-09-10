@@ -28,7 +28,11 @@ jobs:
           pip install -r requirements.txt
 
       - name: Build documentation
-        run: mkslides build .
+        run: mkslides build -f mkslides.yml .
+
+      - name: Copy Assets
+        run: cp -r assets site
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./site

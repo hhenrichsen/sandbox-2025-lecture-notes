@@ -1,0 +1,223 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
+
+/* Catppuccin Dark Theme - uses the frappe theme */
+:root {
+  --base: #1e1e2e;
+  --text: #cdd6f4;
+  --pink: #f5c2e7;
+  --mauve: #cba6f7;
+  --red: #f38ba8;
+  --maroon: #eba0ac;
+  --peach: #fab387;
+  --yellow: #f9e2af;
+  --green: #a6e3a1;
+  --teal: #94e2d5;
+  --sky: #89dceb;
+  --sapphire: #74c7ec;
+  --blue: #89b4fa;
+  --lavender: #b4befe;
+  --text: #cdd6f4;
+  --subtext1: #bac2de;
+  --subtext0: #a6adc8;
+  --overlay2: #9399b2;
+  --overlay1: #7f849c;
+  --overlay0: #6c7086;
+  --surface2: #585b70;
+  --surface1: #45475a;
+  --surface0: #313244;
+  --base: #1e1e2e;
+  --mantle: #181825;
+  --crust: #11111b;
+  --text-filter: invert(87%) sepia(11%) saturate(343%) hue-rotate(193deg)
+    brightness(103%) contrast(93%);
+  --button-opacity: 0.3;
+}
+
+:root {
+  background-color: var(--base);
+}
+
+/* Reveal.js Theme Customization */
+.reveal {
+  font-family: "Inter", sans-serif;
+  background-color: var(--base);
+  color: var(--text);
+
+  .hidden {
+    display: none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-family: "Cormorant Garamond", serif;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 2em;
+    color: var(--red);
+  }
+
+  h2 {
+    font-size: 1.8em;
+    color: var(--peach);
+  }
+
+  h3 {
+    font-size: 1.6em;
+    color: var(--yellow);
+  }
+
+  h4 {
+    font-size: 1.4em;
+    color: var(--green);
+  }
+
+  h5 {
+    font-size: 1.2em;
+    color: var(--teal);
+  }
+
+  h1:not(:has(~ :not(aside))),
+  h2:not(:has(~ :not(aside))),
+  h3:not(:has(~ :not(aside))),
+  h4:not(:has(~ :not(aside))),
+  h5:not(:has(~ :not(aside))) {
+    font-size: 4rem;
+  }
+
+  a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  p,
+  li {
+    font-size: 2em;
+  }
+
+  .slides {
+    text-align: left;
+    line-height: 1.5;
+  }
+
+  pre {
+    background-color: var(--crust);
+    color: var(--text);
+    min-width: 100%;
+    padding: 2rem;
+    border-radius: 2rem;
+
+    code {
+      color: var(--text);
+      font-family: "JetBrains Mono";
+    }
+    code.hljs {
+      background: none !important;
+    }
+  }
+
+  blockquote {
+    display: block;
+    position: relative;
+    width: 80%;
+    margin: var(--r-block-margin) auto;
+    padding: 2rem;
+    padding-left: 2rem;
+    font-style: italic;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2);
+    border-left: var(--text) 0.5rem solid;
+    border-radius: 2rem;
+    text-align: left;
+  }
+
+  blockquote::after {
+    content: '"';
+    font-size: 8rem;
+    font-style: italic;
+    color: var(--text);
+    position: absolute;
+    top: 3rem;
+    left: -5rem;
+  }
+
+  blockquote .attribution::before {
+    content: "—";
+  }
+
+  blockquote .attribution {
+    font-style: italic;
+    font-family: "Cormorant Garamond", serif;
+    margin-top: 0.5rem;
+    margin-left: 2rem;
+    display: block;
+    color: var(--overlay0);
+    font-size: 1.2em;
+  }
+
+  .question::before {
+    content: "?";
+    font-family: "Cormorant Garamond", serif;
+    font-size: 8rem;
+    color: var(--peach);
+    position: absolute;
+    top: -1rem;
+    left: -5rem;
+  }
+
+  .question {
+    text-align: left;
+    padding-left: 2rem;
+    border-left: var(--peach) 0.5rem solid;
+  }
+
+  .question h1,
+  .question h2,
+  .question h3,
+  .question h4,
+  .question h5,
+  .question h6 {
+    color: var(--peach);
+  }
+
+  .small {
+    font-size: 1rem;
+  }
+
+  ul {
+    margin: 1rem 2rem;
+    line-height: 2;
+  }
+
+  hr {
+    margin: 2rem 0;
+  }
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  opacity: var(--button-opacity);
+  transition: opacity 0.2s;
+}
+
+.theme-toggle:hover {
+  opacity: 0.7;
+}
+
+.theme-toggle img {
+  width: 20px;
+  height: 20px;
+  /* set the icon color to match the text color */
+  filter: brightness(0) saturate(100%) var(--text-filter);
+}
