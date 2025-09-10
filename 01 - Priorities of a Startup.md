@@ -1,5 +1,8 @@
-# 01 - Priorities of a Startup
+# 01 - Priorities of a Startup <!-- .element: class="title" -->
 
+_by Hunter Henrichsen_
+
+<!-- vslide -->
 <!-- prettier-ignore-start -->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->

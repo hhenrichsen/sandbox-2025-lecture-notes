@@ -1,5 +1,9 @@
-# 00 - Syllabus
+# 00 - Syllabus <!-- .element: class="title" -->
 
+_by Hunter Henrichsen_
+
+<!-- vslide -->
+<!-- prettier-ignore-start -->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
@@ -16,6 +20,7 @@
 - [Student Disability](#student-disability)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<!-- prettier-ignore-end -->
 
 ## Schedule
 

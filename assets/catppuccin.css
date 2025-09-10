@@ -85,7 +85,12 @@
   h2:not(:has(~ :not(aside))),
   h3:not(:has(~ :not(aside))),
   h4:not(:has(~ :not(aside))),
-  h5:not(:has(~ :not(aside))) {
+  h5:not(:has(~ :not(aside))),
+  h1.title,
+  h2.title,
+  h3.title,
+  h4.title,
+  h5.title {
     font-size: 4rem;
   }
 
