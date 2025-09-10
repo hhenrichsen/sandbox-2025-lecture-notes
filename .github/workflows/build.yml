@@ -28,7 +28,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Build documentation
-        run: mkslides build -f mkslides.yml .
+        run: mkslides build -f mkslides.yml notes/
 
       - name: Copy Assets
         run: cp -r assets site
