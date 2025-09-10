@@ -31,6 +31,12 @@
   --text-filter: invert(87%) sepia(11%) saturate(343%) hue-rotate(193deg)
     brightness(103%) contrast(93%);
   --button-opacity: 0.3;
+  --r-background-color: var(--base);
+  --r-heading-font: "Cormorant Garamond", serif;
+  --r-main-font: "Inter", sans-serif;
+  --r-code-font: "JetBrains Mono", monospace;
+  --r-heading-color: var(--text);
+  --r-main-color: var(--text);
 }
 
 :root {
@@ -201,28 +207,68 @@
   hr {
     margin: 2rem 0;
   }
+
+  .reveal div.slide-background {
+    background-color: var(--base) !important;
+  }
 }
 
-.theme-toggle {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 1000;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem;
-  opacity: var(--button-opacity);
-  transition: opacity 0.2s;
+@media print {
+  :root {
+    --base: #eff1f5;
+    --text: #4c4f69;
+    --pink: #ea76cb;
+    --mauve: #8839ef;
+    --red: #d20f39;
+    --maroon: #e64553;
+    --peach: #fe640b;
+    --yellow: #df8e1d;
+    --green: #40a02b;
+    --teal: #179299;
+    --sky: #04a5e5;
+    --sapphire: #209fb5;
+    --blue: #1e66f5;
+    --lavender: #7287fd;
+    --text: #4c4f69;
+    --subtext1: #5c5f77;
+    --subtext0: #6c6f85;
+    --overlay2: #7c7f93;
+    --overlay1: #8c8fa1;
+    --overlay0: #9ca0b0;
+    --surface2: #acb0be;
+    --surface1: #bcc0cc;
+    --surface0: #ccd0da;
+    --base: #eff1f5;
+    --mantle: #e6e9ef;
+    --crust: #dce0e8;
+  }
 }
 
-.theme-toggle:hover {
-  opacity: 0.7;
-}
-
-.theme-toggle img {
-  width: 20px;
-  height: 20px;
-  /* set the icon color to match the text color */
-  filter: brightness(0) saturate(100%) var(--text-filter);
+.reveal-print {
+  --base: #eff1f5;
+  --text: #4c4f69;
+  --pink: #ea76cb;
+  --mauve: #8839ef;
+  --red: #d20f39;
+  --maroon: #e64553;
+  --peach: #fe640b;
+  --yellow: #df8e1d;
+  --green: #40a02b;
+  --teal: #179299;
+  --sky: #04a5e5;
+  --sapphire: #209fb5;
+  --blue: #1e66f5;
+  --lavender: #7287fd;
+  --text: #4c4f69;
+  --subtext1: #5c5f77;
+  --subtext0: #6c6f85;
+  --overlay2: #7c7f93;
+  --overlay1: #8c8fa1;
+  --overlay0: #9ca0b0;
+  --surface2: #acb0be;
+  --surface1: #bcc0cc;
+  --surface0: #ccd0da;
+  --base: #eff1f5;
+  --mantle: #e6e9ef;
+  --crust: #dce0e8;
 }
