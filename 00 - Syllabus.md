@@ -92,10 +92,11 @@ Submit a brief explanation of what you accomplished, what worked well, and what 
 Build a feature into your app that's more complex than a simple CRUD operation, and the UI associated with it.
 
 Examples of things that are not allowed:
-* A form that creates something
-* A button that creates or deletes something
-* Clicking on something to edit a value
-* A list of things
+
+- A form that creates something
+- A button that creates or deletes something
+- Clicking on something to edit a value
+- A list of things
 
 I'd like to see something more cohesive than this. Many of the above are trivial to build with modern technologies and frameworks, and I want to see you be creative with features that stretch beyond those.
 
@@ -133,6 +134,7 @@ Either way, we'll talk about these things:
 - 24pts - Answering the Initial Questions
 - 24pts - Demonstrating a Production Application
 - 16pts - Answering any follow-up questions (this is done as part of the office hours meeting, or I'll follow up on Slack if there are any)
+
 #### Participation (5pts / 5%)
 
 Due: December 17th, 2025
@@ -160,7 +162,7 @@ In keeping with the principles of the BYU Honor Code, students are expected to b
 
 ## Preventing & Responding to Sexual Misconduct
 
-_The health and well-being of students is of paramount importance at Brigham Young University.  If you or someone you know has experienced sexual harassment (including sexual violence), there are many resources available for assistance._ 
+*The health and well-being of students is of paramount importance at Brigham Young University.  If you or someone you know has experienced sexual harassment (including sexual violence), there are many resources available for assistance.* 
 
 In accordance with Title IX of the Education Amendments of 1972, BYU prohibits unlawful sex discrimination, including sexual harassment, against any participant in its education programs or activities. The university also prohibits sexual harassment by its personnel and students. Sexual harassment occurs when
 
