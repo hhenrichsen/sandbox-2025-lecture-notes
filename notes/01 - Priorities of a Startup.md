@@ -7,37 +7,38 @@ _by Hunter Henrichsen_
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [Pre-Lecture](#pre-lecture)
-  - [Links](#links)
-  - [Events and Announcements](#events-and-announcements)
-  - [News](#news)
-- [Intro](#intro)
-  - [Introducing Hunter](#introducing-hunter)
-  - [Classroom Technology](#classroom-technology)
-  - [A Normal Day in Class](#a-normal-day-in-class)
-- [Syllabus Review](#syllabus-review)
-- [Poll Results](#poll-results)
-- [Priorities of a Startup](#priorities-of-a-startup)
-  - [Speed](#speed)
-  - [Scale](#scale)
-  - [Onboarding](#onboarding)
-- [Project Management](#project-management)
-  - [Stories / Issues / Tickets](#stories--issues--tickets)
-  - [Projects / Epics](#projects--epics)
-  - [Tech Debt](#tech-debt)
-- [Code Management](#code-management)
-  - [Git Branch Management](#git-branch-management)
-  - [Code Review](#code-review)
-  - [Tests](#tests)
-- [High Level Overview](#high-level-overview)
-  - [Common Elements](#common-elements)
-  - [Common Architectures](#common-architectures)
-- [Random Advice](#random-advice)
-  - [Choosing a Tech Stack](#choosing-a-tech-stack)
-  - [Infrastructure](#infrastructure)
-  - [Chasing Trends](#chasing-trends)
-  - [On Asking Questions](#on-asking-questions)
-- [For Next Time](#for-next-time)
+- [01 - Priorities of a Startup ](#01---priorities-of-a-startup-)
+  - [Pre-Lecture](#pre-lecture)
+    - [Links](#links)
+    - [Events and Announcements](#events-and-announcements)
+    - [News](#news)
+  - [Intro](#intro)
+    - [Introducing Hunter](#introducing-hunter)
+    - [Classroom Technology](#classroom-technology)
+    - [A Normal Day in Class](#a-normal-day-in-class)
+  - [Syllabus Review](#syllabus-review)
+  - [Poll Results](#poll-results)
+  - [Priorities of a Startup](#priorities-of-a-startup)
+    - [Speed](#speed)
+    - [Scale](#scale)
+    - [Onboarding](#onboarding)
+  - [Project Management](#project-management)
+    - [Stories / Issues / Tickets](#stories--issues--tickets)
+    - [Projects / Epics](#projects--epics)
+    - [Tech Debt](#tech-debt)
+  - [Code Management](#code-management)
+    - [Git Branch Management](#git-branch-management)
+    - [Code Review](#code-review)
+    - [Tests](#tests)
+  - [High Level Overview](#high-level-overview)
+    - [Common Elements](#common-elements)
+    - [Common Architectures](#common-architectures)
+  - [Random Advice](#random-advice)
+    - [The 50% Rule](#the-50-rule)
+    - [Infrastructure](#infrastructure)
+    - [Chasing Trends](#chasing-trends)
+    - [On Asking Questions](#on-asking-questions)
+  - [For Next Time](#for-next-time)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 <!-- prettier-ignore-end -->
@@ -364,12 +365,13 @@ Don't let perfect be the enemy of good, however:
 
 ### Tests
 
+I write tests for three reasons:<!-- .element: class="hidden" -->
+
+1. Enables Refactoring
+2. Allows merging with confidence
+3. Enables Agentic AI (claude, cursor, etc.)
+
 <!-- notes -->
-
-I write tests for two reasons:
-
-1. It lets me refactor my code
-2. It lets me merge without manually testing every code path
 
 Early on, it's probably only worth investing in for core flows; log in,
 onboarding, etc., to make sure that those work for prospective new users.
@@ -410,9 +412,8 @@ you do find something to pursue.
 
 ### Common Architectures
 
-Some of the most common architectures that I hear talked about are:
-
-<!-- .element: class="fragment fade-in-then-semi-out" -->
+Some of the most common architectures that I hear talked about
+are:<!-- .element: class="hidden" -->
 
 - Monolith <!-- .element: class="fragment fade-in-then-semi-out" -->
 - Service-Oriented<!-- .element: class="fragment fade-in-then-semi-out" -->
@@ -440,26 +441,35 @@ into vendors and can end up being more expensive than a regular server.
 
 <!-- vslide -->
 
-### Choosing a Tech Stack
+### The 50% Rule
+
+No more than 50% of the following can be net new:<!-- .element: class="hidden" -->
+
+- Stack <!-- .element: class="fragment fade-in-then-semi-out" -->
+- Scope <!-- .element: class="fragment fade-in-then-semi-out" -->
+- Scale <!-- .element: class="fragment fade-in-then-semi-out" -->
 
 <!-- notes -->
 
 Lucid started out using CakePHP and now uses a much more complex stack with
-Angular and Scala. Choose something you can work quickly in. I tend to use a 50%
-rule for picking a project's stack:
-
-No more than 50% of combined framework, and scope can be net new.
+Angular and Scala. Choose something you can work quickly in.
 
 For example, if I'm learning a new language or framework, I have to build
 something that I've built before to focus on learning that new framework more
-fully.
+fully, and not worry about supporting hundreds or thousands of users.
 
 Or, if I'm building a brand new project, I do best if I work in a language and
-framework that I'm familiar with. One thing to be cautious of when doing this,
-however, is that hiring engineers for niche frameworks is harder than getting
-someone into a codebase using a popular language. There's a steeper onboarding
-process there, so sometimes fronting the cost of learning something popular can
-pay off when you get to the point of needing more help.
+framework that I'm familiar with.
+
+Or, if I'm trying to support a higher scale than one I've built this problem in
+before, I do best when I solve a problem that I'm familiar with and in a tech
+stack I know.
+
+One thing to be cautious of when doing this, however, is that hiring engineers
+for niche frameworks is harder than getting someone into a codebase using a
+popular language. There's a steeper onboarding process there, so sometimes
+fronting the cost of learning something popular can pay off when you get to the
+point of needing more help.
 
 <!-- vslide -->
 
