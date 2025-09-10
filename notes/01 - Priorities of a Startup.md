@@ -442,7 +442,8 @@ into vendors and can end up being more expensive than a regular server.
 
 ### The 50% Rule
 
-No more than 50% of the following can be net new:<!-- .element: class="hidden" -->
+No more than 50% of the following can be net
+new:<!-- .element: class="hidden" -->
 
 - Stack <!-- .element: class="fragment fade-in-then-semi-out" -->
 - Scope <!-- .element: class="fragment fade-in-then-semi-out" -->
