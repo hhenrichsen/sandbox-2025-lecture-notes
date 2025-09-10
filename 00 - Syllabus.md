@@ -1,3 +1,21 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [00 - Syllabus](#00---syllabus)
+  - [Schedule](#schedule)
+  - [Communication](#communication)
+    - [Feedback](#feedback)
+  - [Use of AI](#use-of-ai)
+    - [Office Hours](#office-hours)
+  - [Assignments](#assignments)
+    - [Assignment Policy](#assignment-policy)
+    - [Assignment Descriptions](#assignment-descriptions)
+  - [Honor Code](#honor-code)
+  - [Preventing & Responding to Sexual Misconduct](#preventing--responding-to-sexual-misconduct)
+  - [Student Disability](#student-disability)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # 00 - Syllabus
 
 ## Schedule
