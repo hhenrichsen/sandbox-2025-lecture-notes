@@ -7,37 +7,38 @@ _by Hunter Henrichsen_
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [Pre-Lecture](#pre-lecture)
-  - [Links](#links)
-  - [Events and Announcements](#events-and-announcements)
-  - [News](#news)
-- [Intro](#intro)
-  - [Introducing Hunter](#introducing-hunter)
-  - [Classroom Technology](#classroom-technology)
-  - [A Normal Day in Class](#a-normal-day-in-class)
-- [Syllabus Review](#syllabus-review)
-- [Poll Results](#poll-results)
-- [Priorities of a Startup](#priorities-of-a-startup)
-  - [Speed](#speed)
-  - [Scale](#scale)
-  - [Onboarding](#onboarding)
-- [Project Management](#project-management)
-  - [Stories / Issues / Tickets](#stories--issues--tickets)
-  - [Projects / Epics](#projects--epics)
-  - [Tech Debt](#tech-debt)
-- [Code Management](#code-management)
-  - [Git Branch Management](#git-branch-management)
-  - [Code Review](#code-review)
-  - [Tests](#tests)
-- [High Level Overview](#high-level-overview)
-  - [Common Elements](#common-elements)
-  - [Common Architectures](#common-architectures)
-- [Random Advice](#random-advice)
-  - [Choosing a Tech Stack](#choosing-a-tech-stack)
-  - [Infrastructure](#infrastructure)
-  - [Chasing Trends](#chasing-trends)
-  - [On Asking Questions](#on-asking-questions)
-- [For Next Time](#for-next-time)
+- [01 - Priorities of a Startup ](#01---priorities-of-a-startup-)
+  - [Pre-Lecture](#pre-lecture)
+    - [Links](#links)
+    - [Events and Announcements](#events-and-announcements)
+    - [News](#news)
+  - [Intro](#intro)
+    - [Introducing Hunter](#introducing-hunter)
+    - [Classroom Technology](#classroom-technology)
+    - [A Normal Day in Class](#a-normal-day-in-class)
+  - [Syllabus Review](#syllabus-review)
+  - [Poll Results](#poll-results)
+  - [Priorities of a Startup](#priorities-of-a-startup)
+    - [Speed](#speed)
+    - [Scale](#scale)
+    - [Onboarding](#onboarding)
+  - [Project Management](#project-management)
+    - [Stories / Issues / Tickets](#stories--issues--tickets)
+    - [Projects / Epics](#projects--epics)
+    - [Tech Debt](#tech-debt)
+  - [Code Management](#code-management)
+    - [Git Branch Management](#git-branch-management)
+    - [Code Review](#code-review)
+    - [Tests](#tests)
+  - [High Level Overview](#high-level-overview)
+    - [Common Elements](#common-elements)
+    - [Common Architectures](#common-architectures)
+  - [Random Advice](#random-advice)
+    - [Choosing a Tech Stack](#choosing-a-tech-stack)
+    - [Infrastructure](#infrastructure)
+    - [Chasing Trends](#chasing-trends)
+    - [On Asking Questions](#on-asking-questions)
+  - [For Next Time](#for-next-time)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 <!-- prettier-ignore-end -->
@@ -81,6 +82,9 @@ article about it after you get called on._
 
 ### Introducing Hunter
 
+- 26 years old<!-- .element: class="fragment fade-in-then-semi-out" -->
+- Engineering Manager at Lucid
+  Software<!-- .element: class="fragment fade-in-then-semi-out" -->
 - Oldest of 6 boys<!-- .element: class="fragment fade-in-then-semi-out" -->
 - Grew up in
   Connecticut<!-- .element: class="fragment fade-in-then-semi-out" -->
