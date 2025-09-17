@@ -21,13 +21,16 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Install dependencies
+      - name: Install animations dependencies
         run: bun install
         working-directory: animations
 
       - name: Build animations
         run: bun run build
         working-directory: animations
+
+      - name: Install root dependencies
+        run: bun install
 
       - name: Build notes
         run: bun run build
@@ -36,6 +39,6 @@ jobs:
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./site
+          path: ./dist
       - id: deployment
         uses: actions/deploy-pages@v4
