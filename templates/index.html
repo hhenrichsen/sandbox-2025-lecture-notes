@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <title>Lecture Notes Index</title>
+
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        line-height: 1.6;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        color: #333;
+      }
+
+      h1 {
+        color: #2c3e50;
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 10px;
+      }
+
+      .notes-list {
+        list-style: none;
+        padding: 0;
+      }
+
+      .notes-list li {
+        margin-bottom: 1em;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f8f9fa;
+      }
+
+      .notes-list li:hover {
+        background-color: #e9ecef;
+      }
+
+      .note-title {
+        font-size: 1.2em;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.5em;
+      }
+
+      .note-meta {
+        font-size: 0.9em;
+        color: #666;
+        margin-bottom: 0.5em;
+      }
+
+      .note-description {
+        color: #555;
+        margin-bottom: 0.5em;
+      }
+
+      .note-link {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .note-link:hover {
+        text-decoration: underline;
+      }
+
+      .generated-info {
+        margin-top: 2em;
+        padding: 15px;
+        background-color: #e8f4f8;
+        border-radius: 5px;
+        font-size: 0.9em;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Lecture Notes</h1>
+
+    <ul class="notes-list">
+      {{#each files}}
+      <li>
+        <div class="note-title">{{title}}</div>
+        {{#if author}}
+        <div class="note-meta"><strong>Author:</strong> {{author}}</div>
+        {{/if}} {{#if description}}
+        <div class="note-description">{{description}}</div>
+        {{/if}}
+        <a href="{{filename}}.html" class="note-link">View Presentation →</a>
+      </li>
+      {{/each}}
+    </ul>
+
+    <div class="generated-info">
+      <strong>Generated:</strong> {{generatedAt}}<br />
+      <strong>Total Notes:</strong> {{count}}
+    </div>
+  </body>
+</html>

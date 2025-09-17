@@ -7,6 +7,7 @@ _by Hunter Henrichsen_
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+- [Animation](#animation)
 - [Pre-Lecture](#pre-lecture)
   - [Links](#links)
   - [Events and Announcements](#events-and-announcements)
@@ -33,7 +34,7 @@ _by Hunter Henrichsen_
   - [Common Elements](#common-elements)
   - [Common Architectures](#common-architectures)
 - [Random Advice](#random-advice)
-  - [The 50% Rule](#the-50%25-rule)
+  - [The 50% Rule](#the-50-rule)
   - [Infrastructure](#infrastructure)
   - [Chasing Trends](#chasing-trends)
   - [On Asking Questions](#on-asking-questions)
@@ -41,6 +42,16 @@ _by Hunter Henrichsen_
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 <!-- prettier-ignore-end -->
+
+<!-- slide -->
+
+<motion-canvas-player src="/animations/src/test.project.js" auto="true"></motion-canvas-player>
+
+<!-- vslide -->
+
+## Animation
+
+<motion-canvas-player src="/animations/src/test.project.js" auto="true"></motion-canvas-player>
 
 <!-- slide -->
 
@@ -61,9 +72,10 @@ _by Hunter Henrichsen_
 _I mostly know about Lucid events, but feel free to slack me a day or two before
 class and I can get things added here._
 
-- Lucid Tech Talk - September 11th. Come and hear from alumni Andrew Peterson
-  about how we deal with backwards compatibility at Lucid. There will be free
-  food.
+- Lucid Tech Talk - September 11th @ 7PM in TMCB 1170. Come and hear from alumni
+  Andrew Peterson about how we deal with backwards compatibility at Lucid. There
+  will be free food.
+- WiCS Opening Social - September 10th (tonight) @ 5:00PM in WSC 3290.
 
 <!-- vslide -->
 

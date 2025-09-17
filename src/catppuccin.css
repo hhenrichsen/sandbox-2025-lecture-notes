@@ -212,6 +212,69 @@
   .reveal div.slide-background {
     background-color: var(--base) !important;
   }
+
+  /* Ensure slide content appears above background patterns */
+  .reveal .slides {
+    position: relative;
+    z-index: 10;
+  }
+
+  .reveal .slides section {
+    position: relative;
+    z-index: 10;
+  }
+
+  /* Motion Canvas Player - Full screen when only non-aside element */
+  motion-canvas-player:only-child:not(aside) {
+    width: 100% !important;
+    height: 100% !important;
+    position: relative !important;
+    z-index: 10 !important;
+  }
+
+  /* Motion Canvas Player - Full screen when only non-aside element in section */
+  section:has(motion-canvas-player:only-child:not(aside)) {
+    min-height: 100vh !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  section:has(motion-canvas-player:only-child:not(aside)) motion-canvas-player {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100vw !important;
+  }
+
+  /* Motion Canvas Player - Take remaining space when there's also a title */
+  section:has(motion-canvas-player) {
+    min-height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  section:has(motion-canvas-player) motion-canvas-player {
+    flex: 1 !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    position: relative !important;
+    z-index: 10 !important;
+  }
+
+  /* Override for full screen when only motion-canvas-player */
+  section:has(motion-canvas-player:only-child:not(aside)) {
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  section:has(motion-canvas-player:only-child:not(aside)) motion-canvas-player {
+    flex: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100vw !important;
+    position: relative !important;
+    z-index: 10 !important;
+  }
 }
 
 .backgrounds::after {

@@ -1,6 +1,0 @@
-slides:
-  highlight_theme: https://unpkg.com/@catppuccin/highlightjs@1.0.1/css/catppuccin-mocha.css
-  theme: assets/catppuccin.css
-  separator: "^<!--\\s*slide\\s*-->\\s*$"
-  separator_vertical: "^<!--\\s*vslide\\s*-->\\s*$"
-  separator_notes: "^\\s*<!-- notes -->\\s*$"

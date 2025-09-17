@@ -1,0 +1,33 @@
+{
+  "name": "sandbox-2025-lecture-notes",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/reveal.js": "^5.2.0",
+    "light-server": "^2.9.1",
+    "sass-embedded": "^1.92.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "scripts": {
+    "build:notes": "bun run index.ts",
+    "build": "bun run build:notes && vite build",
+    "dev": "vite",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@motion-canvas/2d": "^3.17.2",
+    "@motion-canvas/core": "^3.17.2",
+    "@motion-canvas/player": "^3.17.2",
+    "glob": "^10.3.10",
+    "gray-matter": "^4.0.3",
+    "handlebars": "^4.7.8",
+    "js-yaml": "^4.1.0",
+    "reveal.js": "^5.2.1",
+    "vite": "^7.1.5",
+    "vite-plugin-handlebars": "^2.0.0"
+  }
+}
