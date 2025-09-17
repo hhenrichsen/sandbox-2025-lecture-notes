@@ -1,4 +1,10 @@
-import { readFileSync, writeFileSync, readdirSync, existsSync, renameSync } from "fs";
+import {
+  readFileSync,
+  writeFileSync,
+  readdirSync,
+  existsSync,
+  renameSync,
+} from "fs";
 import { join } from "path";
 import type { Plugin } from "vite";
 
@@ -25,7 +31,7 @@ function processMotionCanvasUrls(html: string, baseUrl: string): string {
 
 export function motionCanvasUrlsPlugin(): Plugin {
   let viteConfig: any;
-  
+
   return {
     name: "motion-canvas-urls",
     configResolved(resolvedConfig) {
@@ -43,7 +49,7 @@ export function motionCanvasUrlsPlugin(): Plugin {
           if (file.endsWith(".html")) {
             const srcPath = join(tempHtmlDir, file);
             const destPath = join(distDir, file);
-            
+
             // Move file to root dist
             renameSync(srcPath, destPath);
             console.log(`Moved HTML file to root: ${file}`);
@@ -56,11 +62,11 @@ export function motionCanvasUrlsPlugin(): Plugin {
       files.forEach((file) => {
         if (file.endsWith(".html")) {
           const filePath = join(distDir, file);
-          
+
           // Process motion-canvas-player URLs
           let content = readFileSync(filePath, "utf-8");
           const processedContent = processMotionCanvasUrls(content, baseUrl);
-          
+
           if (content !== processedContent) {
             writeFileSync(filePath, processedContent, "utf-8");
             console.log(`Processed motion-canvas URLs in: ${file}`);

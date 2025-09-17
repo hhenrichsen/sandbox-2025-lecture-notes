@@ -114,7 +114,10 @@ function processMarkdownFiles(config: Config): MarkdownFile[] {
   return files.sort((a, b) => a.filename.localeCompare(b.filename));
 }
 
-function generateHTMLFiles(markdownFiles: MarkdownFile[], config: Config): void {
+function generateHTMLFiles(
+  markdownFiles: MarkdownFile[],
+  config: Config,
+): void {
   // Ensure output directory exists
   ensureDirectoryExists(config.outputDir);
 
@@ -142,7 +145,10 @@ function generateHTMLFiles(markdownFiles: MarkdownFile[], config: Config): void 
   }
 }
 
-function generateIndexFile(markdownFiles: MarkdownFile[], config: Config): void {
+function generateIndexFile(
+  markdownFiles: MarkdownFile[],
+  config: Config,
+): void {
   const indexTemplate = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -259,21 +265,21 @@ let generatedHtmlFiles: string[] = [];
 function generateHtmlFilesForConfig(): string[] {
   const config = loadConfig();
   config.outputDir = ".vite-temp-html";
-  
+
   // Process all markdown files
   const markdownFiles = processMarkdownFiles(config);
-  
+
   if (markdownFiles.length === 0) {
     return [];
   }
-  
+
   // Generate HTML files in temp location
   generateHTMLFiles(markdownFiles, config);
   generateIndexFile(markdownFiles, config);
-  
-  const fileNames = markdownFiles.map(f => `${f.filename}.html`);
+
+  const fileNames = markdownFiles.map((f) => `${f.filename}.html`);
   fileNames.push("index.html");
-  
+
   return fileNames;
 }
 
@@ -290,16 +296,16 @@ export function markdownToSlidesPlugin(): Plugin {
 
 export function getMarkdownHtmlInputs(): Record<string, string> {
   const inputs: Record<string, string> = {};
-  
+
   if (generatedHtmlFiles.length === 0) {
     // Generate them if they don't exist yet
     generatedHtmlFiles = generateHtmlFilesForConfig();
   }
-  
+
   generatedHtmlFiles.forEach((file) => {
     const name = file.replace(".html", "").replace(/[^a-zA-Z0-9]/g, "-");
     inputs[name] = resolve(process.cwd(), ".vite-temp-html", file);
   });
-  
+
   return inputs;
 }
