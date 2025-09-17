@@ -48,7 +48,7 @@ function processMotionCanvasUrls(html: string): string {
       const newSrc = normalizedBase + normalizedSrc;
 
       return `<motion-canvas-player${beforeSrc}src="${newSrc}"${afterSrc}>`;
-    }
+    },
   );
 }
 

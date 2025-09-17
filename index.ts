@@ -273,7 +273,7 @@ function main(): void {
   generateIndexFile(markdownFiles);
 
   console.log(
-    `\nConversion complete! Processed ${markdownFiles.length} files.`
+    `\nConversion complete! Processed ${markdownFiles.length} files.`,
   );
   console.log(`Output directory: ${config.siteDir}`);
 }
