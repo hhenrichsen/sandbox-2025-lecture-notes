@@ -13,8 +13,7 @@
     "typescript": "^5"
   },
   "scripts": {
-    "build:notes": "bun run index.ts",
-    "build": "bun run build:notes && vite build",
+    "build": "vite build",
     "dev": "vite",
     "preview": "vite preview"
   },

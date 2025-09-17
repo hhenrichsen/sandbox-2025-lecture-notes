@@ -6,9 +6,10 @@ import {
   existsSync,
   mkdirSync,
 } from "fs";
-import { join, extname, basename } from "path";
+import { join, extname, basename, resolve } from "path";
 import matter from "gray-matter";
 import Handlebars from "handlebars";
+import type { Plugin } from "vite";
 
 interface MarkdownFile {
   title: string;
@@ -29,13 +30,12 @@ interface SlidesConfig {
 
 interface Config {
   notesDir: string;
-  siteDir: string;
+  outputDir: string;
   templateFile: string;
   indexFile: string;
   slidesConfig: SlidesConfig;
 }
 
-// Load configuration from mkslides.yml
 function loadConfig(): Config {
   let slidesConfig: SlidesConfig = {
     highlight_theme:
@@ -48,14 +48,12 @@ function loadConfig(): Config {
 
   return {
     notesDir: "notes",
-    siteDir: "site",
+    outputDir: "dist",
     templateFile: "templates/template.html",
     indexFile: "templates/index.html",
     slidesConfig,
   };
 }
-
-const config = loadConfig();
 
 function ensureDirectoryExists(dirPath: string): void {
   if (!existsSync(dirPath)) {
@@ -87,7 +85,7 @@ function readMarkdownFile(filePath: string): MarkdownFile {
   };
 }
 
-function processMarkdownFiles(): MarkdownFile[] {
+function processMarkdownFiles(config: Config): MarkdownFile[] {
   const files: MarkdownFile[] = [];
   const notesPath = config.notesDir;
 
@@ -116,9 +114,9 @@ function processMarkdownFiles(): MarkdownFile[] {
   return files.sort((a, b) => a.filename.localeCompare(b.filename));
 }
 
-function generateHTMLFiles(markdownFiles: MarkdownFile[]): void {
-  // Ensure site directory exists
-  ensureDirectoryExists(config.siteDir);
+function generateHTMLFiles(markdownFiles: MarkdownFile[], config: Config): void {
+  // Ensure output directory exists
+  ensureDirectoryExists(config.outputDir);
 
   // Read template
   if (!existsSync(config.templateFile)) {
@@ -138,13 +136,13 @@ function generateHTMLFiles(markdownFiles: MarkdownFile[]): void {
     const htmlContent = template(templateData, {
       noEscape: true,
     });
-    const outputPath = join(config.siteDir, `${file.filename}.html`);
+    const outputPath = join(config.outputDir, `${file.filename}.html`);
     writeFileSync(outputPath, htmlContent, "utf-8");
     console.log(`Generated: ${file.filename}.html`);
   }
 }
 
-function generateIndexFile(markdownFiles: MarkdownFile[]): void {
+function generateIndexFile(markdownFiles: MarkdownFile[], config: Config): void {
   const indexTemplate = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -250,33 +248,58 @@ function generateIndexFile(markdownFiles: MarkdownFile[]): void {
     count: markdownFiles.length,
   });
 
-  const outputPath = join(config.siteDir, "index.html");
+  const outputPath = join(config.outputDir, "index.html");
   writeFileSync(outputPath, htmlContent, "utf-8");
   console.log("Generated: index.html");
 }
 
-function main(): void {
-  console.log("Starting markdown to HTML conversion...");
+// Global variable to store generated files for config phase
+let generatedHtmlFiles: string[] = [];
 
+function generateHtmlFilesForConfig(): string[] {
+  const config = loadConfig();
+  config.outputDir = ".vite-temp-html";
+  
   // Process all markdown files
-  const markdownFiles = processMarkdownFiles();
-
+  const markdownFiles = processMarkdownFiles(config);
+  
   if (markdownFiles.length === 0) {
-    console.log("No markdown files found to process");
-    return;
+    return [];
   }
-
-  // Generate HTML files
-  generateHTMLFiles(markdownFiles);
-
-  // Generate index file
-  generateIndexFile(markdownFiles);
-
-  console.log(
-    `\nConversion complete! Processed ${markdownFiles.length} files.`,
-  );
-  console.log(`Output directory: ${config.siteDir}`);
+  
+  // Generate HTML files in temp location
+  generateHTMLFiles(markdownFiles, config);
+  generateIndexFile(markdownFiles, config);
+  
+  const fileNames = markdownFiles.map(f => `${f.filename}.html`);
+  fileNames.push("index.html");
+  
+  return fileNames;
 }
 
-// Run the main function
-main();
+export function markdownToSlidesPlugin(): Plugin {
+  return {
+    name: "markdown-to-slides",
+    config() {
+      // Generate HTML files early so they can be used as Vite inputs
+      console.log("Pre-generating HTML files for Vite processing...");
+      generatedHtmlFiles = generateHtmlFilesForConfig();
+    },
+  };
+}
+
+export function getMarkdownHtmlInputs(): Record<string, string> {
+  const inputs: Record<string, string> = {};
+  
+  if (generatedHtmlFiles.length === 0) {
+    // Generate them if they don't exist yet
+    generatedHtmlFiles = generateHtmlFilesForConfig();
+  }
+  
+  generatedHtmlFiles.forEach((file) => {
+    const name = file.replace(".html", "").replace(/[^a-zA-Z0-9]/g, "-");
+    inputs[name] = resolve(process.cwd(), ".vite-temp-html", file);
+  });
+  
+  return inputs;
+}
