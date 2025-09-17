@@ -7,12 +7,11 @@ _by Alex Densley and Tanner King_
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [02 - Guest Lecture ](#02---guest-lecture-)
-  - [Pre-Lecture](#pre-lecture)
-    - [Links](#links)
-    - [News](#news)
-  - [Guest Lecture](#guest-lecture)
-  - [For Next Time](#for-next-time)
+- [Pre-Lecture](#pre-lecture)
+  - [Links](#links)
+  - [News](#news)
+- [Guest Lecture](#guest-lecture)
+- [For Next Time](#for-next-time)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 <!-- prettier-ignore-end -->
