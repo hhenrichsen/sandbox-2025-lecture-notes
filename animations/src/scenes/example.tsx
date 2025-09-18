@@ -15,7 +15,7 @@ export default makeScene2D(function* (view) {
 
   // Add the main circle with theme colors
   view.add(
-    <Circle ref={circle} size={320} fill={colors.yellow} lineWidth={8} />
+    <Circle ref={circle} size={320} fill={colors.yellow} lineWidth={8} />,
   );
 
   // Animate the circle

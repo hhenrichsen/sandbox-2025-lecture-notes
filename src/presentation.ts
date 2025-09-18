@@ -91,7 +91,7 @@ function applyColorsToMotionCanvasPlayers() {
     const oldVariables = player.getAttribute("variables");
     player.setAttribute(
       "variables",
-      JSON.stringify({ ...JSON.parse(oldVariables ?? "{}"), ...colors })
+      JSON.stringify({ ...JSON.parse(oldVariables ?? "{}"), ...colors }),
     );
   });
 }
@@ -148,7 +148,7 @@ let plugins = [RevealMarkdown, RevealNotes, RevealZoom];
 // If there are code blocks (```), add the highlight plugin:
 if (document.querySelector("textarea[data-template]")) {
   const template = document.querySelector(
-    "textarea[data-template]"
+    "textarea[data-template]",
   )?.textContent;
   if (template?.includes("```")) {
     const { default: RevealHighlight } = await import(

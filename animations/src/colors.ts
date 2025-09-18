@@ -111,7 +111,7 @@ export function getColors(): Record<ColorName, SimpleSignal<Color>> {
         } catch (error) {
           // If variable doesn't exist, use default
           colors[colorName] = createSignal(
-            () => new Color(defaultColors[colorName])
+            () => new Color(defaultColors[colorName]),
           );
         }
       });
@@ -131,6 +131,6 @@ export function getColors(): Record<ColorName, SimpleSignal<Color>> {
     Object.entries(defaultColors).map(([key, value]) => [
       key,
       createSignal(() => new Color(value)),
-    ])
+    ]),
   ) as Record<ColorName, SimpleSignal<Color>>;
 }
