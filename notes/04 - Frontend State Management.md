@@ -7,19 +7,24 @@ _by Hunter Henrichsen_
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [03 - Dev Tools](#03---dev-tools)
-  - [Pre-Lecture](#pre-lecture)
-    - [Links](#links)
-    - [News](#news)
-  - [Dev Tools](#dev-tools)
-    - [Browser Console](#browser-console)
-    - [Network Tab](#network-tab)
-    - [Sources Tab](#sources-tab)
-      - [`debugger` Statement](#debugger-statement)
-      - [Conditional Breakpoints](#conditional-breakpoints)
-    - [Performance Tab](#performance-tab)
-    - [Application Tab](#application-tab)
-  - [For Next Time](#for-next-time)
+- [Pre-Lecture](#pre-lecture)
+  - [Links](#links)
+  - [News](#news)
+- [Questions from Last Time](#questions-from-last-time)
+- [AI Discussion](#ai-discussion)
+  - [Instructions](#instructions)
+  - [MCP](#mcp)
+  - [Prompting](#prompting)
+  - [Agentic Loop](#agentic-loop)
+  - [Things to Watch out for](#things-to-watch-out-for)
+- [Frontend State Management](#frontend-state-management)
+  - [Normal React](#normal-react)
+  - [Stores](#stores)
+  - [Signals](#signals)
+  - [The URL](#the-url)
+- [Project Structure](#project-structure)
+  - [Domain / Feature Organization](#domain--feature-organization)
+  - [Service Isolation](#service-isolation)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 <!-- prettier-ignore-end -->
