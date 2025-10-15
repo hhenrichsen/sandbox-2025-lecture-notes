@@ -175,6 +175,8 @@ Here's an example Next.js dockerfile (albeit more complex than strictly
 necessary), from their
 [example repo](https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile).
 
+<!-- vslide -->
+
 ```dockerfile
 # syntax=docker.io/docker/dockerfile:1
 
@@ -309,6 +311,7 @@ a long time in setting up a VPC or other similar tools.
   out, though.<!-- .element: class="fragment fade-in-then-semi-out" -->
 
 <!-- notes -->
+
 <!-- slide -->
 
 ## Relationships
@@ -321,7 +324,7 @@ a long time in setting up a VPC or other similar tools.
 - Often times, it makes sense to have meta-relationship information as well;
   Many-to-many tables give you a table for this automatically.
 
-<!-- notes -->
+<!-- slide -->
 
 ## Group Activity
 
