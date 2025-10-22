@@ -9,21 +9,9 @@ _by Tanner Linsley_
 
 - [Pre-Lecture](#pre-lecture)
   - [Links](#links)
+  - [Events](#events)
   - [News](#news)
-- [Questions from Last Time](#questions-from-last-time)
-- [Deployment](#deployment)
-  - [Serverless](#serverless)
-  - [Managed](#managed)
-  - [Unmanaged](#unmanaged)
-  - [On-Premise](#on-premise)
-  - [Containers](#containers)
-  - [Networking](#networking)
-- [Databases](#databases)
-  - [Relational](#relational)
-  - [Document](#document)
-  - [Graph](#graph)
-- [Relationships](#relationships)
-- [Group Activity](#group-activity)
+- [Tanner Linsley](#tanner-linsley)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 <!-- prettier-ignore-end -->
