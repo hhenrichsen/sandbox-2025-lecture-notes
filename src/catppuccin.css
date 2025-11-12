@@ -361,6 +361,89 @@
     max-height: 100vh !important;
     object-fit: contain !important;
   }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    font-size: 1.5em;
+    background-color: var(--surface0);
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  thead {
+    background-color: var(--surface1);
+  }
+
+  th {
+    padding: 0.5rem 0.5rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text);
+    border-bottom: 2px solid var(--surface2);
+    font-family: "Cormorant Garamond", serif;
+  }
+
+  td {
+    padding: 0.5rem 0.5rem;
+    color: var(--text);
+    border-bottom: 1px solid var(--surface2);
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  tbody tr:hover {
+    background-color: var(--surface1);
+    transition: background-color 0.2s ease;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.02);
+  }
+
+  tbody tr:nth-child(even):hover {
+    background-color: var(--surface1);
+  }
+
+  section.text-heavy p,
+  section.text-heavy li {
+    font-size: 1.2em;
+  }
+
+  /* Multitable layout - side by side tables */
+  section.multitable {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 2rem !important;
+    align-items: flex-start !important;
+  }
+
+  section.multitable h1,
+  section.multitable h2,
+  section.multitable h3,
+  section.multitable h4,
+  section.multitable h5,
+  section.multitable h6 {
+    width: 100% !important;
+    flex-shrink: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  section.multitable table {
+    flex: 1 1 calc(50% - 1rem);
+    min-width: 300px;
+    margin: 0;
+    font-size: 1.2em;
+  }
+
+  section.multitable table th,
+  section.multitable table td {
+    padding: 0.5rem 0.5rem;
+  }
 }
 
 .backgrounds::after {
