@@ -151,9 +151,8 @@ if (document.querySelector("textarea[data-template]")) {
     "textarea[data-template]",
   )?.textContent;
   if (template?.includes("```")) {
-    const { default: RevealHighlight } = await import(
-      "reveal.js/plugin/highlight/highlight.js"
-    );
+    const { default: RevealHighlight } =
+      await import("reveal.js/plugin/highlight/highlight.js");
     plugins.push(RevealHighlight);
   }
 }
