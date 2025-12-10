@@ -5,24 +5,15 @@ _by Hunter Henrichsen_
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-<!-- vslide -->
-
-- [10 - Access Control](#10---access-control)
-  - [Pre-Lecture](#pre-lecture)
-    - [Links](#links)
-    - [News](#news)
-  - [Access Models](#access-models)
-    - [Owner-Only (eCommerce Customers)](#owner-only-ecommerce-customers)
-    - [Member and Admin (Slack, Notion)](#member-and-admin-slack-notion)
-    - [Premade Roles (Google Docs, Lucid)](#premade-roles-google-docs-lucid)
-    - [Custom Roles (Discord)](#custom-roles-discord)
-  - [Accounts and Organizations](#accounts-and-organizations)
-  - [GUIDs Vs Serial IDs](#guids-vs-serial-ids)
-  - [Modelling Exercise](#modelling-exercise)
-    - [Users<!-- .element: class="fragment fade-in-then-semi-out" -->](#users---element-classfragment-fade-in-then-semi-out---)
-    - [Organizations<!-- .element: class="fragment fade-in-then-semi-out" -->](#organizations---element-classfragment-fade-in-then-semi-out---)
-    - [Repositories<!-- .element: class="fragment fade-in-then-semi-out" -->](#repositories---element-classfragment-fade-in-then-semi-out---)
-    - [Issues<!-- .element: class="fragment fade-in-then-semi-out" -->](#issues---element-classfragment-fade-in-then-semi-out---)
+- [Pre-Lecture](#pre-lecture)
+  - [Links](#links)
+  - [News](#news)
+  - [Reminders](#reminders)
+  - [Attendance](#attendance)
+- [Retrospective](#retrospective)
+  - [What Went Well?](#what-went-well)
+  - [What Didn't Go Well?](#what-didnt-go-well)
+  - [What Did You Learn?](#what-did-you-learn)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
