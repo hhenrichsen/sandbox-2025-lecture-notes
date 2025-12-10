@@ -35,6 +35,7 @@ _by Hunter Henrichsen_
 
 - Django 6<!-- .element: class="fragment fade-in-then-semi-out"-->
 - TanStack AI Alpha<!-- .element: class="fragment fade-in-then-semi-out"-->
+
 <!-- vslide -->
 
 ### Reminders
@@ -48,6 +49,8 @@ _by Hunter Henrichsen_
   attendance.<!-- .element: class="fragment fade-in-then-semi-out"-->
 - HackThisSite and Deployed App require a link submission, not a video or
   image.<!-- .element: class="fragment fade-in-then-semi-out"-->
+
+<!-- vslide -->
 
 ### Attendance
 
