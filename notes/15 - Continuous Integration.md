@@ -288,7 +288,7 @@ import type { NextApiRequest } from "next";
 
 export async function GET(
   _request: NextApiRequest,
-  ctx: RouteContext<"/api/events/[id]">
+  ctx: RouteContext<"/api/events/[id]">,
 ) {
   const supabase = await createSupabaseServerClient();
   const { id } = await ctx.params;
@@ -312,7 +312,7 @@ export async function GET(
   if (queryError) {
     return NextResponse.json(
       { error: "Failed to fetch events" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -356,7 +356,7 @@ class DatabaseError extends Error {
 export async function getEventById(
   client: SupabaseClient<Database>,
   id: string,
-  userId: string | undefined
+  userId: string | undefined,
 ): Promise<Tables<"hx2-audience_event"> | null> {
   if (!userId) {
     throw new UserNotAuthorizedError("User ID is required");
@@ -383,7 +383,7 @@ export async function getEventById(
 
 export async function GET(
   _request: NextApiRequest,
-  ctx: RouteContext<"/api/events/[id]">
+  ctx: RouteContext<"/api/events/[id]">,
 ) {
   const supabase = await createSupabaseServerClient();
   const { id } = await ctx.params;
@@ -452,7 +452,7 @@ I would then update the lib file to use this:
 export async function getEventById(
   queries: EventQueries,
   id: string,
-  userId: string | undefined
+  userId: string | undefined,
 ): Promise<Event | null> {
   if (!userId) {
     throw new UserNotAuthorizedError("User ID is required");
@@ -473,7 +473,7 @@ I could then use this in my route like this:
 ```ts
 export async function GET(
   _request: NextApiRequest,
-  ctx: RouteContext<"/api/events/[id]">
+  ctx: RouteContext<"/api/events/[id]">,
 ) {
   const supabase = await createSupabaseServerClient();
   const { id } = await ctx.params;
@@ -683,7 +683,7 @@ mockRouter.useParser(
     "/static/path",
     "/[dynamic]/path",
     "/[...catchAll]/path",
-  ])
+  ]),
 );
 ```
 
