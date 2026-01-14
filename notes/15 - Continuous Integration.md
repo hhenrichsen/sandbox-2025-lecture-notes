@@ -1,3 +1,26 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [15 - Continuous Integration](#15---continuous-integration)
+  - [Pre-Lecture](#pre-lecture)
+    - [Links](#links)
+    - [Attendance Quiz](#attendance-quiz)
+    - [News](#news)
+  - [Testing](#testing)
+    - [Business Logic Unit Tests](#business-logic-unit-tests)
+    - [Component Unit Tests](#component-unit-tests)
+    - [Component Catalog](#component-catalog)
+    - [Integration Tests](#integration-tests)
+    - [End-to-End Tests](#end-to-end-tests)
+    - [Performance Testing](#performance-testing)
+  - [Continuous Integration](#continuous-integration)
+    - [GitHub Actions](#github-actions)
+    - [Linting and Formatting](#linting-and-formatting)
+    - [Testing](#testing-1)
+    - [AI Code Review](#ai-code-review)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # 15 - Continuous Integration
 
 ## Pre-Lecture
