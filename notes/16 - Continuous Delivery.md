@@ -1,6 +1,22 @@
 # 16 - Continuous Delivery
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Pre-Lecture](#pre-lecture)
+  - [Links](#links)
+  - [Attendance Quiz](#attendance-quiz)
+  - [News](#news)
+- [Questions from Last Time](#questions-from-last-time)
+  - [Have You Ever Fine-tuned an Llm? Under what Circumstance Would You Recommend Doing This?](#have-you-ever-fine-tuned-an-llm-under-what-circumstance-would-you-recommend-doing-this)
+  - [If You Have an AI Component of an App (like the Improve Button on slido), what is the Best way to Test the Quality of the AI's Response?](#if-you-have-an-ai-component-of-an-app-like-the-improve-button-on-slido-what-is-the-best-way-to-test-the-quality-of-the-ais-response)
+  - [What are your thoughts on Anthropic saying stuff like that (in relation to building Claude Cowork in 10 days) but then announcing massive engineering hire numbers. Why would they need so many new engineers?](#what-are-your-thoughts-on-anthropic-saying-stuff-like-that-in-relation-to-building-claude-cowork-in-10-days-but-then-announcing-massive-engineering-hire-numbers-why-would-they-need-so-many-new-engineers)
+- [Keep it Simple](#keep-it-simple)
+- [Containers](#containers)
+- [Deployment Strategy](#deployment-strategy)
+- [Managing Infrastructure](#managing-infrastructure)
+- [Continuous Deployment](#continuous-deployment)
+
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
