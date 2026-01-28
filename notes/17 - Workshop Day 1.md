@@ -29,7 +29,6 @@ _by Hunter Henrichsen_
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-
 ## Pre-Lecture
 
 <!-- vslide -->
@@ -58,7 +57,9 @@ _by Hunter Henrichsen_
 
 <!-- notes -->
 
-I don't think the security implications have been solved for these yet, same with Clawdbot/Moltbot. I'm not using them daily. I don't have tasks that would really require them, either.
+I don't think the security implications have been solved for these yet, same
+with Clawdbot/Moltbot. I'm not using them daily. I don't have tasks that would
+really require them, either.
 
 <!-- vslide -->
 
@@ -66,7 +67,8 @@ I don't think the security implications have been solved for these yet, same wit
 
 <!-- notes -->
 
-I think CI is more important, since it enables you to do CD with confidence. Otherwise, you might be releasing broken code.
+I think CI is more important, since it enables you to do CD with confidence.
+Otherwise, you might be releasing broken code.
 
 <!-- vslide -->
 
@@ -74,8 +76,8 @@ I think CI is more important, since it enables you to do CD with confidence. Oth
 
 <!-- notes -->
 
-I'm a big fan of GitHub Actions. I set up a Jenkins server a while ago,
-but GitHub Actions is much simpler and easier to set up.
+I'm a big fan of GitHub Actions. I set up a Jenkins server a while ago, but
+GitHub Actions is much simpler and easier to set up.
 
 For CD, I'm a big fan of Fly.io and most managed services. Things get more
 complex when you have more moving parts to your infrastructure.
@@ -94,8 +96,9 @@ Fly.io, but also go look at my Tools note.
 
 <!-- notes -->
 
-Test what users are using, and add regression tests for bugs that you fix. Ideally, your tests
-should make sure bugs aren't introduced again. To some extent, you know that your other code is working already.
+Test what users are using, and add regression tests for bugs that you fix.
+Ideally, your tests should make sure bugs aren't introduced again. To some
+extent, you know that your other code is working already.
 
 <!-- vslide -->
 
@@ -114,7 +117,9 @@ to solve especially for collaboration.
 
 <!-- notes -->
 
-RAG is better for getting accurate information into context. Fine tunes are better for tasks for style and rules training. You always want some amount of context engineering to get data into your model.
+RAG is better for getting accurate information into context. Fine tunes are
+better for tasks for style and rules training. You always want some amount of
+context engineering to get data into your model.
 
 <!-- vslide -->
 
@@ -144,9 +149,9 @@ I'm aware of some other interesting things like aspect-oriented programming, but
 I haven't really tried them out enough.
 
 Projects-wise, I wish I would have spent more time seeing my side projects
-through to completion. I have a bunch of them that do different things, and
-they get to an okay state, but I don't do much to really market or promote them.
-I think that's okay when I'm the only user, but I bet I could make cooler things
+through to completion. I have a bunch of them that do different things, and they
+get to an okay state, but I don't do much to really market or promote them. I
+think that's okay when I'm the only user, but I bet I could make cooler things
 if I spent the time to get the word out about them, and forced myself to scale
 and maintain them.
 
@@ -172,15 +177,15 @@ develop more ambitiously.
 
 <!-- notes -->
 
-Votes in Slack said we wanted to see an EC2 demo. I'm going to try to do
-a CD demo as well, but I really want to keep this simple. Again, my
-recommendation if at all possible is to keep it simple and stick with a PaaS.
-Most of the time, they'll serve what you're trying to do just fine. If you run
-up against a limitation, you can look into something simple like a VPS.
+Votes in Slack said we wanted to see an EC2 demo. I'm going to try to do a CD
+demo as well, but I really want to keep this simple. Again, my recommendation if
+at all possible is to keep it simple and stick with a PaaS. Most of the time,
+they'll serve what you're trying to do just fine. If you run up against a
+limitation, you can look into something simple like a VPS.
 
 There are a lot of sysadmin things that you need to get into to do this
-"properly". I'll do some of them, but this puddle is a mile deep and I'm
-by no means an expert here.
+"properly". I'll do some of them, but this puddle is a mile deep and I'm by no
+means an expert here.
 
 That said, you all requested it, so here we go.
 
@@ -197,9 +202,9 @@ That said, you all requested it, so here we go.
 
 ### Basic Provisioning and Hardening
 
-I'm gonna stick with a t3-micro because it's on the free tier and will do
-enough for this demo. I set it up with a new key pair and the default security
-group, with HTTP and SSH traffic allowed.
+I'm gonna stick with a t3-micro because it's on the free tier and will do enough
+for this demo. I set it up with a new key pair and the default security group,
+with HTTP and SSH traffic allowed.
 
 Next, I'm gonna set the hostname to `hx2-deploy` and install tailscale.
 
@@ -209,7 +214,8 @@ sudo vim /etc/hosts # (to add hx2-deploy.localhost to 127.0.0.1)
 sudo reboot
 ```
 
-After the reboot, I'm going to do an update and add a user for the application to run as.
+After the reboot, I'm going to do an update and add a user for the application
+to run as.
 
 ```bash
 sudo dnf update -y
@@ -284,13 +290,14 @@ sudo systemctl enable --now dnf-automatic.timer
 
 <!-- notes -->
 
-Tailscale is neat because it simplifies IP management; I don't need an IP
-for the github action that we're going to set up. It also reduces the attack
-surface of your machine by only allowing SSH access via Tailscale.
+Tailscale is neat because it simplifies IP management; I don't need an IP for
+the github action that we're going to set up. It also reduces the attack surface
+of your machine by only allowing SSH access via Tailscale.
 
 Alternatives: AWS VPC, Cloudflare Warp, etc.
 
 To start, I'll install tailscale and join the tailscale network.
+
 ```bash
 curl -fsSL https://tailscale.com/install.sh | sh
 sudo tailscale up \
@@ -319,15 +326,19 @@ I'll also need some ACL rules:
   },
   "acls": [
     { "action": "accept", "src": ["tag:trusted"], "dst": ["*:*"] },
-    { "action": "accept", "src": ["group:developers"], "dst": ["tag:external:*"] },
+    {
+      "action": "accept",
+      "src": ["group:developers"],
+      "dst": ["tag:external:*"]
+    },
     { "action": "accept", "src": ["tag:ci"], "dst": ["tag:external:22"] }
   ],
   "ssh": [
     {
-        "action": "accept",
-        "src":    ["tag:trusted"],
-        "dst":    ["tag:ssh"],
-        "users":  ["autogroup:nonroot"],
+      "action": "accept",
+      "src": ["tag:trusted"],
+      "dst": ["tag:ssh"],
+      "users": ["autogroup:nonroot"]
     },
     {
       "action": "accept",
@@ -345,7 +356,8 @@ I'll also need some ACL rules:
 }
 ```
 
-Finally, I'm going to make it so the machine is only accessible to SSH via Tailscale.
+Finally, I'm going to make it so the machine is only accessible to SSH via
+Tailscale.
 
 ```bash
 # Get Tailscale IP
@@ -399,6 +411,7 @@ ingress:
 ```
 
 Then set cloudflared to run on startup and start it.
+
 ```bash
 sudo cloudflared service install
 sudo systemctl enable --now cloudflared
@@ -437,7 +450,7 @@ And set up the Caddyfile:
 {
     # No automatic HTTPS - Cloudflare handles TLS
     auto_https off
-    
+
     # Admin API disabled for security
     admin off
 }
@@ -459,10 +472,10 @@ And set up the Caddyfile:
 # Main site - listens on 8080 for Cloudflare tunnel
 :8080 {
     import security-headers
-    
+
     # Compression
     encode zstd gzip
-    
+
     # Structured logging
     log {
         output file /var/log/caddy/access.log {
@@ -471,12 +484,12 @@ And set up the Caddyfile:
         }
         format json
     }
-    
+
     # Health check endpoint (bypasses Next.js for faster response)
     handle /proxy-health {
         respond "OK" 200
     }
-    
+
     # Everything else goes to Next.js
     # Next.js handles its own static asset serving from .next/static
     reverse_proxy localhost:3000 {
@@ -496,8 +509,8 @@ I can then test it by going to https://deploy.hx2.dev/proxy-health.
 
 <!-- notes -->
 
-Then I'm going to grab nvm. pm2 supports bun for some things, but some things
-in pm2 don't quite work with bun yet.
+Then I'm going to grab nvm. pm2 supports bun for some things, but some things in
+pm2 don't quite work with bun yet.
 
 ```bash
 sudo -u deploy -i
@@ -561,34 +574,34 @@ on:
   workflow_dispatch:
 
 env:
-  NODE_VERSION: '24'
+  NODE_VERSION: "24"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-      
+          cache: "npm"
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Run linter
         run: npm run lint
-      
+
       - name: Run tests
         run: npm test -- --passWithNoTests
-      
+
       - name: Build application
         run: npm run build
         env:
           NEXT_TELEMETRY_DISABLED: 1
-      
+
       - name: Package standalone output
         run: |
           cd .next/standalone
@@ -596,7 +609,7 @@ jobs:
           cp -r ../.next/static ./.next/static
           echo "${{ github.sha }}" > VERSION
           tar -czf ../../release.tar.gz .
-      
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -608,20 +621,20 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment: production
-    
+
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: release-${{ github.run_number }}
-      
+
       - name: Connect to Tailscale
         uses: tailscale/github-action@v3
         with:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
-      
+
       - name: Deploy to server
         env:
           HOST: ${{ secrets.EC2_TAILSCALE_IP }}
@@ -632,10 +645,10 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -H $HOST >> ~/.ssh/known_hosts 2>/dev/null || true
-          
+
           # Copy artifact to server
           scp -i ~/.ssh/deploy_key release.tar.gz deploy@$HOST:/tmp/
-          
+
           # Deploy on server
           ssh -i ~/.ssh/deploy_key deploy@$HOST << DEPLOY_SCRIPT
             set -e
@@ -690,7 +703,7 @@ jobs:
             pm2 reload app
             exit 1
           DEPLOY_SCRIPT
-      
+
       - name: Deployment failed
         if: failure()
         run: echo "::error::Deployment failed! Check the logs above."

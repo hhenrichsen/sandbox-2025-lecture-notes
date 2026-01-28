@@ -28,7 +28,7 @@
   my machine", and as a bonus, make it work the same as in prod, too
 - [Mailpit](https://github.com/axllent/mailpit) - Test email and SMTP without
   needing an actual email server or account
-- [s3Mock](https://hub.docker.com/r/adobe/s3mock/) - S3-compatible, 
+- [s3Mock](https://hub.docker.com/r/adobe/s3mock/) - S3-compatible,
   locally-runnable object storage
 
 ## Libraries
@@ -37,8 +37,8 @@
 
 - [faker.js](https://github.com/faker-js/faker) - Faker.js is a library that
   allows you to generate fake data.
-- [Testcontainers](https://testcontainers.org/) - Testcontainers is a library that
-  allows you to create containers for testing.
+- [Testcontainers](https://testcontainers.org/) - Testcontainers is a library
+  that allows you to create containers for testing.
 
 ### APIs and Type Safety
 
@@ -101,10 +101,10 @@
   focused around real-time data.
 - [Pocketbase](https://pocketbase.io/), a simple, single-executable backend as a
   service.
-- [Supabase](https://supabase.com/) backend-as-a-service that let you focus on 
-  building features (Also, if you're using Supabase, I recommend giving 
-  [this article][2] a read)
-- [Infisical](https://infisical.com/) - secrets management 
+- [Supabase](https://supabase.com/) backend-as-a-service that let you focus on
+  building features (Also, if you're using Supabase, I recommend giving [this
+  article][2] a read)
+- [Infisical](https://infisical.com/) - secrets management
 
 ### Continuous Deployment
 
@@ -124,7 +124,6 @@
 - [HotJar](https://www.hotjar.com/) - Heatmaps and Recordings to help you look
   at your users' behavior
 
-
 ## Prototyping
 
 - [My JSON Server](https://my-json-server.typicode.com/) – turn a JSON file in
@@ -132,5 +131,7 @@
 - [JSON Placeholder API](https://jsonplaceholder.typicode.com/) - a preset fake
   API that can be used to grab data quickly.
 
-[1]: https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/tunnel-guide/
-[2]: https://catjam.fi/articles/next-supabase-what-do-differently#supabase--database
+[1]:
+  https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/tunnel-guide/
+[2]:
+  https://catjam.fi/articles/next-supabase-what-do-differently#supabase--database
