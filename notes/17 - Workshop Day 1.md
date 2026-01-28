@@ -3,6 +3,30 @@
 _by Hunter Henrichsen_
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Pre-Lecture](#pre-lecture)
+  - [Links](#links)
+  - [Attendance Quiz](#attendance-quiz)
+  - [News](#news)
+- [Questions from Last Time](#questions-from-last-time)
+  - [What are your thoughts on ChatGPT Atlas and Perplexity Comet? How are you using these daily?](#what-are-your-thoughts-on-chatgpt-atlas-and-perplexity-comet-how-are-you-using-these-daily)
+  - [Which would you say is more important: Continuous Integration or Continuous Delivery?](#which-would-you-say-is-more-important-continuous-integration-or-continuous-delivery)
+  - [What are your favorite tools for CI and CD?](#what-are-your-favorite-tools-for-ci-and-cd)
+  - [What you recommend for hosting backend(like express or something like that)](#what-you-recommend-for-hosting-backendlike-express-or-something-like-that)
+  - [When you have a big application that doesn’t have any tests how do you prioritize what to test first?](#when-you-have-a-big-application-that-doesnt-have-any-tests-how-do-you-prioritize-what-to-test-first)
+  - [I know it's not a CI/CD question, but could someone point me to some resources for embedded document editing, version control, etc. for document control?](#i-know-its-not-a-cicd-question-but-could-someone-point-me-to-some-resources-for-embedded-document-editing-version-control-etc-for-document-control)
+  - [Do you have experience with RAGs? In what situations would this be better than training your own model on your domain?](#do-you-have-experience-with-rags-in-what-situations-would-this-be-better-than-training-your-own-model-on-your-domain)
+  - [Is there a place we can see all your recommended tools and dependencies? It can be hard to keep track of all of the tools out there.](#is-there-a-place-we-can-see-all-your-recommended-tools-and-dependencies-it-can-be-hard-to-keep-track-of-all-of-the-tools-out-there)
+  - [Do you have any experience with merkle trees? Had someone recommend them the other day but I'm not sure what a good use case for them would be](#do-you-have-any-experience-with-merkle-trees-had-someone-recommend-them-the-other-day-but-im-not-sure-what-a-good-use-case-for-them-would-be)
+  - [What is one thing you would do differently work-wise or programming-wise if you could go back in time a few years?](#what-is-one-thing-you-would-do-differently-work-wise-or-programming-wise-if-you-could-go-back-in-time-a-few-years)
+- [EC2 Demo](#ec2-demo)
+  - [Basic Tech Stack](#basic-tech-stack)
+  - [Basic Provisioning and Hardening](#basic-provisioning-and-hardening)
+  - [Networking](#networking)
+  - [Setting up some Software](#setting-up-some-software)
+  - [Setting up the GitHub Action](#setting-up-the-github-action)
+
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 

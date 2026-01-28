@@ -1,3 +1,25 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Appendix A: Tools](#appendix-a-tools)
+  - [Development Tools](#development-tools)
+  - [Libraries](#libraries)
+    - [Testing](#testing)
+    - [APIs and Type Safety](#apis-and-type-safety)
+    - [Collaborative Editing](#collaborative-editing)
+    - [Infrastructure as Code](#infrastructure-as-code)
+    - [UI and UX](#ui-and-ux)
+  - [Hosting](#hosting)
+  - [Infrastructure](#infrastructure)
+    - [Networking](#networking)
+    - [Backend as a Service](#backend-as-a-service)
+    - [Continuous Deployment](#continuous-deployment)
+  - [Monitoring](#monitoring)
+  - [Analytics](#analytics)
+  - [Prototyping](#prototyping)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Appendix A: Tools
 
 ## Development Tools
