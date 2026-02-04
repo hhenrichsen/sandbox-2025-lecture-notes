@@ -147,11 +147,13 @@
   }
 
   pre {
+    --pre-padding: 2rem;
+    --pre-radius: 2rem;
     background-color: var(--crust);
     color: var(--text);
     min-width: 100%;
-    padding: 2rem;
-    border-radius: 2rem;
+    padding: var(--pre-padding);
+    border-radius: var(--pre-radius);
 
     code {
       color: var(--text);
@@ -160,6 +162,92 @@
     code.hljs {
       background: none !important;
     }
+  }
+
+  /* Code line number tables - override any inherited table styles */
+  pre .hljs-ln {
+    width: 100%;
+    border-collapse: collapse;
+    background: transparent;
+    margin: 0;
+    box-shadow: none;
+  }
+
+  pre .hljs-ln td {
+    border: none;
+    background: transparent;
+  }
+
+  pre .hljs-ln td.hljs-ln-code {
+    padding: 0;
+  }
+
+  pre .hljs-ln td.hljs-ln-numbers {
+    padding: 0 1rem 0 0;
+    user-select: none;
+  }
+
+  pre .hljs-ln tr:hover {
+    background: transparent;
+  }
+
+  pre .hljs-ln tr.highlight-line {
+    background-color: var(--surface0);
+  }
+
+  /*
+   * Code fragment positioning for animated line highlights.
+   *
+   * Reveal.js fragment states:
+   * - No classes: fragment not yet shown
+   * - .visible: fragment has been shown (persists when moving forward)
+   * - .current-fragment: currently active fragment
+   * - When past all fragments: all have .visible, none have .current-fragment
+   *
+   * Fragments stack by DOM order (later siblings on top when same z-index),
+   * so no limit on number of highlight steps.
+   */
+  pre.code-wrapper {
+    position: relative;
+  }
+
+  /* Base code element */
+  pre.code-wrapper > code:not(.fragment) {
+    position: relative;
+    z-index: 1;
+    transition: opacity 0.15s ease;
+  }
+
+  /* Fragment code elements - absolutely positioned, hidden by default */
+  pre.code-wrapper code.fragment {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: var(--pre-padding);
+    background-color: var(--crust);
+    border-radius: var(--pre-radius);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    z-index: 2; /* All fragments share z-index; DOM order handles stacking */
+  }
+
+  /* Show the current fragment */
+  pre.code-wrapper code.fragment.current-fragment {
+    opacity: 1;
+  }
+
+  /* When past all fragments (visible but no current), show all visible ones
+     (they stack by DOM order, so only the last one is seen) */
+  pre.code-wrapper:not(:has(code.fragment.current-fragment))
+    code.fragment.visible {
+    opacity: 1;
+  }
+
+  /* Hide base code when any fragment is visible */
+  pre.code-wrapper:has(code.fragment.visible) > code:not(.fragment) {
+    opacity: 0;
   }
 
   blockquote {
@@ -362,8 +450,8 @@
     object-fit: contain !important;
   }
 
-  /* Tables */
-  table {
+  /* Tables (exclude code line number tables - see also pre .hljs-ln rules above) */
+  table:not(.hljs-ln) {
     width: 100%;
     border-collapse: collapse;
     margin: 2rem 0;
@@ -386,26 +474,26 @@
     font-family: "Cormorant Garamond", serif;
   }
 
-  td {
+  table:not(.hljs-ln) td {
     padding: 0.5rem 0.5rem;
     color: var(--text);
     border-bottom: 1px solid var(--surface2);
   }
 
-  tbody tr:last-child td {
+  table:not(.hljs-ln) tbody tr:last-child td {
     border-bottom: none;
   }
 
-  tbody tr:hover {
+  table:not(.hljs-ln) tbody tr:hover {
     background-color: var(--surface1);
     transition: background-color 0.2s ease;
   }
 
-  tbody tr:nth-child(even) {
+  table:not(.hljs-ln) tbody tr:nth-child(even) {
     background-color: rgba(255, 255, 255, 0.02);
   }
 
-  tbody tr:nth-child(even):hover {
+  table:not(.hljs-ln) tbody tr:nth-child(even):hover {
     background-color: var(--surface1);
   }
 
