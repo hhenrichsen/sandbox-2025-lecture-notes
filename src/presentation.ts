@@ -143,6 +143,48 @@ function observeMotionCanvasPlayers() {
   });
 }
 
+// Sticky header - track the most recent heading at each level
+const headingStack: { text: string; level: number }[] = [];
+
+function updateStickyHeader(slide: Element) {
+  const header = document.getElementById("sticky-header");
+  if (!header) return;
+
+  // Find heading in current slide
+  const heading = slide.querySelector("h1, h2, h3, h4, h5");
+  if (heading) {
+    const level = parseInt(heading.tagName[1]);
+    // Update stack: keep headings at higher levels, replace at current level
+    headingStack.length = level - 1;
+    headingStack[level - 1] = {
+      text: heading.textContent || "",
+      level,
+    };
+  }
+
+  // Get the most recent heading (deepest in hierarchy)
+  const currentHeading = headingStack.filter(Boolean).slice(-1)[0];
+
+  // Hide sticky header if the slide already has a heading visible
+  if (heading || !currentHeading) {
+    header.classList.add("hidden");
+    header.textContent = "";
+  } else {
+    header.classList.remove("hidden");
+    header.textContent = currentHeading.text;
+
+    // Update the level class for proper coloring
+    header.classList.remove(
+      "level-1",
+      "level-2",
+      "level-3",
+      "level-4",
+      "level-5",
+    );
+    header.classList.add(`level-${currentHeading.level}`);
+  }
+}
+
 let plugins = [RevealMarkdown, RevealNotes, RevealZoom];
 
 // If there are code blocks (```), add the highlight plugin:
@@ -170,11 +212,15 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Also run when Reveal is ready
-Reveal.on("ready", () => {
+Reveal.on("ready", (event) => {
   applyColorsToMotionCanvasPlayers();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  updateStickyHeader((event as any).currentSlide);
 });
 
-// Re-apply colors when slides change
-Reveal.on("slidechanged", () => {
+// Re-apply colors and update sticky header when slides change
+Reveal.on("slidechanged", (event) => {
   applyColorsToMotionCanvasPlayers();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  updateStickyHeader((event as any).currentSlide);
 });
