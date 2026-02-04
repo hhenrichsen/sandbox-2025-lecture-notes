@@ -37,10 +37,10 @@ _by Hunter Henrichsen_
 ### Events
 
 - [HackUSU](https://huntsman.usu.edu/hackusu/) is coming up on February
-27th-28th. It's a hackathon hosted by USU up on their Logan campus and is a
-great way to go find some like-minded folks. They have categories you can
-compete in, or you can just go and work on your own projects. There's sometimes
-a coupon code in the Slack, but I haven't seen it yet this year.
+  27th-28th. It's a hackathon hosted by USU up on their Logan campus and is a
+  great way to go find some like-minded folks. They have categories you can
+  compete in, or you can just go and work on your own projects. There's
+  sometimes a coupon code in the Slack, but I haven't seen it yet this year.
 
 <!-- vslide -->
 
@@ -114,9 +114,11 @@ unexpected layout shift that occurs during the entire lifecycle of a page.
 
 <!-- notes -->
 
-I want to go over two websites that are super performant, and see how they
-do it. We'll look at the inspiration first, with [McMaster-Carr](https://www.mcmaster.com/). Then we'll
-look at [NextFaster](https://next-faster.vercel.app/), a Next.js implementation of the same site concept.
+I want to go over two websites that are super performant, and see how they do
+it. We'll look at the inspiration first, with
+[McMaster-Carr](https://www.mcmaster.com/). Then we'll look at
+[NextFaster](https://next-faster.vercel.app/), a Next.js implementation of the
+same site concept.
 
 <!-- vslide -->
 
@@ -124,11 +126,11 @@ look at [NextFaster](https://next-faster.vercel.app/), a Next.js implementation 
 
 <!-- notes -->
 
-One of the most common early performance issues to fix is waterfalling. 
-This is when you're stuck waiting for resources to load one after another,
-when potentially you could be loading them in parallel. You can fix this
-both by designing endpoints that return all of the data you need, and by
-using Suspense and Error boundaries in parallel, rather than at a page level.
+One of the most common early performance issues to fix is waterfalling. This is
+when you're stuck waiting for resources to load one after another, when
+potentially you could be loading them in parallel. You can fix this both by
+designing endpoints that return all of the data you need, and by using Suspense
+and Error boundaries in parallel, rather than at a page level.
 
 <!-- vslide -->
 
@@ -146,8 +148,8 @@ const [products, categories] = await Promise.all([
 
 <!-- notes -->
 
-Using independent Suspense boundaries allows components to load in parallel rather
-than waiting for each other:
+Using independent Suspense boundaries allows components to load in parallel
+rather than waiting for each other:
 
 <!-- vslide -->
 
@@ -159,11 +161,11 @@ export default function Dashboard() {
       <Suspense fallback={<CardsSkeleton />}>
         <Cards />
       </Suspense>
-      
+
       <Suspense fallback={<ChartSkeleton />}>
         <RevenueChart />
       </Suspense>
-      
+
       <Suspense fallback={<TableSkeleton />}>
         <DataTable />
       </Suspense>
@@ -203,8 +205,12 @@ For the skeletons, use shimmer animations for better perceived performance:
   }
 
   @keyframes shimmer {
-    from { transform: translateX(-200%); }
-    to { transform: translateX(200%); }
+    from {
+      transform: translateX(-200%);
+    }
+    to {
+      transform: translateX(200%);
+    }
   }
 }
 ```
@@ -239,9 +245,9 @@ function Dashboard() {
 
 <!-- notes -->
 
-Another very important piece is client components. Be very careful where you
-put `"use client"` in your code. Ideally, it's only on small, individual
-interactive components, rather than at a page level.
+Another very important piece is client components. Be very careful where you put
+`"use client"` in your code. Ideally, it's only on small, individual interactive
+components, rather than at a page level.
 
 The benefit for this is that the server can cache parts of this page (especially
 with PPR), which means for your users, the server components are effectively
@@ -252,19 +258,19 @@ shipping unnecessary JS:
 
 <!-- vslide -->
 
-```tsx 
+```tsx
 // Modal.tsx - Client Component (leaf node)
-'use client'
+"use client";
 export function Modal({ children }) {
   const [open, setOpen] = useState(false);
-  return <dialog>{children}</dialog>;  // Server content passes through
+  return <dialog>{children}</dialog>; // Server content passes through
 }
 
 // Page.tsx - Server Component
 export default function Page() {
   return (
     <Modal>
-      <HeavyServerData />  {/* Stays on server! */}
+      <HeavyServerData /> {/* Stays on server! */}
     </Modal>
   );
 }
@@ -278,12 +284,12 @@ For providers that need to wrap your app, use the children slot pattern:
 
 ```tsx
 // providers.tsx - Client Component
-'use client'
+"use client";
 export function Providers({ children }) {
   return (
     <ThemeProvider>
       <AuthProvider>
-        {children}  {/* Server Components pass through */}
+        {children} {/* Server Components pass through */}
       </AuthProvider>
     </ThemeProvider>
   );
@@ -310,16 +316,23 @@ export default function RootLayout({ children }) {
 One of the simplest ways to improve performance is to only do the work once.
 This can be done in a number of ways, including:
 
-- **Static Generation**: Render pages at build time and just serve them. More useful for landing pages, blogs, product pages, etc.
+- **Static Generation**: Render pages at build time and just serve them. More
+  useful for landing pages, blogs, product pages, etc.
 - **Server-Side Caching**: Cache pages on the server for a short period of time.
-- **Cache-Control Headers**: Set cache headers on your pages to control how long they're cached for, both on a CDN and client layer. [Here's a cheat sheet](https://shayy.org/posts/cache-control).
-- **CDN / Edge Caching**: Cache pages at the edge of the network (usually not your network, but with a CDN like Cloudflare, CloudFront, Akamai, etc.), closer to the user.
+- **Cache-Control Headers**: Set cache headers on your pages to control how long
+  they're cached for, both on a CDN and client layer.
+  [Here's a cheat sheet](https://shayy.org/posts/cache-control).
+- **CDN / Edge Caching**: Cache pages at the edge of the network (usually not
+  your network, but with a CDN like Cloudflare, CloudFront, Akamai, etc.),
+  closer to the user.
 - **Worker Caching**: Cache data locally in the browser using Service Workers.
-- **Local Caching**: Cache data locally in the browser using IndexedDB, WASM SQLite, or other local storage solutions.
+- **Local Caching**: Cache data locally in the browser using IndexedDB, WASM
+  SQLite, or other local storage solutions.
 
-Stale-while-revalidate is also a great way to use caching, where you first return
-the cached data, and then update the cache in the background. This is especially
-useful for data that changes frequently, like news articles, or product prices.
+Stale-while-revalidate is also a great way to use caching, where you first
+return the cached data, and then update the cache in the background. This is
+especially useful for data that changes frequently, like news articles, or
+product prices.
 
 In Next.js 16+, you can use the `"use cache"` directive for caching:
 
@@ -369,36 +382,45 @@ You can also look into Workbox for worker caching:
 
 ```javascript
 // sw.js
-import { precacheAndRoute } from 'workbox-precaching';
-import { registerRoute } from 'workbox-routing';
-import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies';
-import { ExpirationPlugin } from 'workbox-expiration';
+import { precacheAndRoute } from "workbox-precaching";
+import { registerRoute } from "workbox-routing";
+import {
+  CacheFirst,
+  NetworkFirst,
+  StaleWhileRevalidate,
+} from "workbox-strategies";
+import { ExpirationPlugin } from "workbox-expiration";
 
 precacheAndRoute(self.__WB_MANIFEST);
 
 // Images: Cache-first (serve from cache, update in background never)
 registerRoute(
-  ({ request }) => request.destination === 'image',
+  ({ request }) => request.destination === "image",
   new CacheFirst({
-    cacheName: 'images-v1',
-    plugins: [new ExpirationPlugin({ maxEntries: 60, maxAgeSeconds: 30 * 24 * 60 * 60 })],
-  })
+    cacheName: "images-v1",
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 60,
+        maxAgeSeconds: 30 * 24 * 60 * 60,
+      }),
+    ],
+  }),
 );
 
 // API calls: Network-first (try network, fall back to cache)
 registerRoute(
-  ({ url }) => url.pathname.startsWith('/api/'),
+  ({ url }) => url.pathname.startsWith("/api/"),
   new NetworkFirst({
-    cacheName: 'api-v1',
+    cacheName: "api-v1",
     networkTimeoutSeconds: 3,
     plugins: [new ExpirationPlugin({ maxAgeSeconds: 60 * 60 })],
-  })
+  }),
 );
 
 // Static assets: Stale-while-revalidate (serve stale, update in background)
 registerRoute(
-  ({ request }) => ['style', 'script'].includes(request.destination),
-  new StaleWhileRevalidate({ cacheName: 'static-v1' })
+  ({ request }) => ["style", "script"].includes(request.destination),
+  new StaleWhileRevalidate({ cacheName: "static-v1" }),
 );
 ```
 
@@ -418,7 +440,8 @@ might not be triggered until later in the page load.
 Most frameworks also have ways to prefetch resources, either on hover or by
 proactively fetching resources then caching them before they're needed.
 
-You can prefetch routes when links enter the viewport using IntersectionObserver:
+You can prefetch routes when links enter the viewport using
+IntersectionObserver:
 
 <!-- vslide -->
 
@@ -443,14 +466,18 @@ export function Link({ href, children }) {
           prefetched.current = true;
         }
       },
-      { rootMargin: "0px", threshold: 0 }
+      { rootMargin: "0px", threshold: 0 },
     );
 
     observer.observe(el);
     return () => observer.disconnect();
   }, [href, router]);
 
-  return <a ref={ref} href={href}>{children}</a>;
+  return (
+    <a ref={ref} href={href}>
+      {children}
+    </a>
+  );
 }
 ```
 
@@ -487,7 +514,8 @@ Another similar thing you can do is virtualize your data, so you're only loading
 the data that's needed for the current page. This is especially useful for large
 lists of data, like a list of products, users, or especially large tables.
 
-For code splitting, use dynamic imports to load heavy components only when needed:
+For code splitting, use dynamic imports to load heavy components only when
+needed:
 
 <!-- vslide -->
 
@@ -562,8 +590,8 @@ One of the biggest things I was doing at Lucid on the performance teams was
 reducing the amount of work being done by the browser, especially our renderer.
 
 Apps tend to load a lot of data that's not needed. It's easiest to start by
-profiling your app and seeing what's taking the most time, and see where you 
-can reduce the amount of work.
+profiling your app and seeing what's taking the most time, and see where you can
+reduce the amount of work.
 
 <!-- vslide -->
 
@@ -613,25 +641,25 @@ Use `useOptimistic` for instant UI feedback while mutations are in flight:
 <!-- vslide -->
 
 ```tsx
-'use client'
-import { useOptimistic } from 'react';
+"use client";
+import { useOptimistic } from "react";
 
 export function MessageList({ messages }) {
   const [optimisticMessages, addOptimistic] = useOptimistic(
     messages,
-    (state, newMsg) => [...state, { ...newMsg, sending: true }]
+    (state, newMsg) => [...state, { ...newMsg, sending: true }],
   );
 
   async function sendMessage(formData) {
-    const text = formData.get('text');
-    addOptimistic({ text, id: crypto.randomUUID() });  // Instant UI
-    await addMessage(text);  // Background sync
+    const text = formData.get("text");
+    addOptimistic({ text, id: crypto.randomUUID() }); // Instant UI
+    await addMessage(text); // Background sync
   }
 
   return (
     <form action={sendMessage}>
       <ul>
-        {optimisticMessages.map(msg => (
+        {optimisticMessages.map((msg) => (
           <li key={msg.id} style={{ opacity: msg.sending ? 0.5 : 1 }}>
             {msg.text}
           </li>
@@ -650,7 +678,7 @@ export function MessageList({ messages }) {
 
 <!-- notes -->
 
-A TCP packet is 1500 bytes. If your page can fit in one packet, it will 
+A TCP packet is 1500 bytes. If your page can fit in one packet, it will
 [load much faster](https://endtimes.dev/why-your-website-should-be-under-14kb-in-size/).
 
 <!-- vslide -->
@@ -659,23 +687,25 @@ A TCP packet is 1500 bytes. If your page can fit in one packet, it will
 
 <!-- notes -->
 
-Images are often the largest assets on a page. Use eager loading for above-the-fold
-images, and lazy loading for everything else:
+Images are often the largest assets on a page. Use eager loading for
+above-the-fold images, and lazy loading for everything else:
 
 <!-- vslide -->
 
 ```tsx
-{products.map((product, index) => (
-  <Image
-    src={product.image}
-    alt={product.name}
-    width={256}
-    height={256}
-    loading={index < 15 ? "eager" : "lazy"}
-    decoding={index < 15 ? "sync" : "async"}
-    quality={65}  // Lower quality for thumbnails
-  />
-))}
+{
+  products.map((product, index) => (
+    <Image
+      src={product.image}
+      alt={product.name}
+      width={256}
+      height={256}
+      loading={index < 15 ? "eager" : "lazy"}
+      decoding={index < 15 ? "sync" : "async"}
+      quality={65} // Lower quality for thumbnails
+    />
+  ));
+}
 ```
 
 <!-- notes -->
@@ -709,7 +739,7 @@ function prefetchImage(src: string) {
     quality: 80,
     alt: "",
   });
-  
+
   const img = new Image();
   img.fetchPriority = "low";
   img.src = props.src;
@@ -731,8 +761,8 @@ Enable these experimental features in `next.config.mjs` for better performance:
 // next.config.mjs
 const nextConfig = {
   experimental: {
-    ppr: true,           // Partial Prerendering - serve static shell instantly
-    inlineCss: true,     // Inline critical CSS to reduce render-blocking
+    ppr: true, // Partial Prerendering - serve static shell instantly
+    inlineCss: true, // Inline critical CSS to reduce render-blocking
     reactCompiler: true, // Automatic memoization
   },
   images: {
@@ -772,7 +802,8 @@ one is better for your production builds.
 #### Lighthouse
 
 Lighthouse is built into Chrome DevTools and provides scores for Performance,
-Accessibility, Best Practices, and SEO. It measures the metrics we discussed earlier.
+Accessibility, Best Practices, and SEO. It measures the metrics we discussed
+earlier.
 
 <!-- vslide -->
 
@@ -787,8 +818,8 @@ execution, network requests, and more.
 #### Node.js Profiling
 
 For server-side performance, use Node's built-in profiler, or run with the
-`NODE_OPTIONS='--inspect' next dev --turbo` flag to get a profiling session
-that you can connect to with `chrome://inspect`.
+`NODE_OPTIONS='--inspect' next dev --turbo` flag to get a profiling session that
+you can connect to with `chrome://inspect`.
 
 <!-- vslide -->
 
@@ -802,13 +833,13 @@ Use `@next/bundle-analyzer` to visualize your JavaScript bundles (with webpack):
 
 ```javascript
 // next.config.js
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
 });
 
 module.exports = withBundleAnalyzer({
   experimental: {
-    optimizePackageImports: ['lucide-react', '@heroicons/react', 'lodash-es'],
+    optimizePackageImports: ["lucide-react", "@heroicons/react", "lodash-es"],
   },
 });
 ```
@@ -905,16 +936,16 @@ jobs:
 
 <!-- notes -->
 
-Always import specific functions rather than entire libraries. The difference
-is substantial:
+Always import specific functions rather than entire libraries. The difference is
+substantial:
 
 ```typescript
 // ❌ Imports entire library (~70KB)
-import _ from 'lodash';
+import _ from "lodash";
 
 // ✅ Tree-shakeable (~3KB)
-import { filter } from 'lodash-es';
+import { filter } from "lodash-es";
 
 // ✅✅ Best - direct import (~1KB)
-import filter from 'lodash/filter';
+import filter from "lodash/filter";
 ```
