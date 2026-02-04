@@ -149,16 +149,51 @@
   pre {
     --pre-padding: 2rem;
     --pre-radius: 2rem;
+    position: relative;
     background-color: var(--crust);
     color: var(--text);
     min-width: 100%;
     padding: var(--pre-padding);
     border-radius: var(--pre-radius);
+    overflow: hidden; /* Contain gradients within border-radius */
 
     code {
       color: var(--text);
       font-family: "JetBrains Mono";
+      display: block;
+      overflow: auto;
+      max-height: 70vh;
+      padding: 2rem 0;
+
+      /* Firefox scrollbar styling */
+      scrollbar-width: thin;
+      scrollbar-color: var(--mantle) var(--crust);
     }
+
+    /* Webkit scrollbar styling */
+    code::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    code::-webkit-scrollbar-track {
+      background: var(--crust);
+      border-radius: 4px;
+    }
+
+    code::-webkit-scrollbar-thumb {
+      background: var(--mantle);
+      border-radius: 4px;
+    }
+
+    code::-webkit-scrollbar-thumb:hover {
+      background: var(--surface0);
+    }
+
+    code::-webkit-scrollbar-corner {
+      background: var(--crust);
+    }
+
     code.hljs {
       background: none !important;
     }
@@ -211,6 +246,28 @@
     position: relative;
   }
 
+  /* Gradient overlays for code blocks */
+  pre::before,
+  pre::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2rem;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  pre::before {
+    top: calc(var(--pre-padding) - 2px);
+    background: linear-gradient(to bottom, var(--crust), transparent);
+  }
+
+  pre::after {
+    bottom: calc(var(--pre-padding) - 2px);
+    background: linear-gradient(to top, var(--crust), transparent);
+  }
+
   /* Base code element */
   pre.code-wrapper > code:not(.fragment) {
     position: relative;
@@ -225,7 +282,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    padding: var(--pre-padding);
+    /* Vertical padding = pre-padding + code padding (2rem), horizontal = pre-padding */
+    padding: calc(var(--pre-padding) + 2rem) var(--pre-padding);
     background-color: var(--crust);
     border-radius: var(--pre-radius);
     opacity: 0;
