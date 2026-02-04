@@ -7,6 +7,19 @@ _by Hunter Henrichsen_
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+- [Pre-Lecture](#pre-lecture)
+  - [Links](#links)
+  - [Events](#events)
+  - [Attendance Quiz](#attendance-quiz)
+  - [News](#news)
+- [Questions from Last Time](#questions-from-last-time)
+- [Performance](#performance)
+  - [Lighthouse Metrics and Why They Matter](#lighthouse-metrics-and-why-they-matter)
+  - [Performance Strategies](#performance-strategies)
+  - [Next.js Configuration for Performance](#nextjs-configuration-for-performance)
+  - [Measuring](#measuring)
+  - [Keeping Quality Up](#keeping-quality-up)
+
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Pre-Lecture
