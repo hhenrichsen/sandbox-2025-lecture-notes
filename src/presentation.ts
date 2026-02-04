@@ -143,18 +143,25 @@ function observeMotionCanvasPlayers() {
   });
 }
 
-// Sticky header - track the most recent heading at each level
-const headingStack: { text: string; level: number }[] = [];
+// Sticky header - pre-computed mapping of slides to their applicable headers
+interface HeaderInfo {
+  text: string;
+  level: number;
+}
 
-function updateStickyHeader(slide: Element) {
-  const header = document.getElementById("sticky-header");
-  if (!header) return;
+// Map of "h-v" slide indices to their applicable header
+const slideHeaderMap = new Map<string, HeaderInfo>();
 
-  // Find heading in current slide
+function processSlide(
+  slide: Element,
+  key: string,
+  headingStack: (HeaderInfo | undefined)[],
+) {
   const heading = slide.querySelector("h1, h2, h3, h4, h5");
+
   if (heading) {
     const level = parseInt(heading.tagName[1]);
-    // Update stack: keep headings at higher levels, replace at current level
+    // Truncate stack to parent level, then add this heading
     headingStack.length = level - 1;
     headingStack[level - 1] = {
       text: heading.textContent || "",
@@ -162,18 +169,52 @@ function updateStickyHeader(slide: Element) {
     };
   }
 
-  // Get the most recent heading (deepest in hierarchy)
-  const currentHeading = headingStack.filter(Boolean).slice(-1)[0];
+  // Store the current applicable header for this slide
+  const currentHeader = headingStack.filter(Boolean).slice(-1)[0];
+  if (currentHeader) {
+    slideHeaderMap.set(key, currentHeader);
+  }
+}
 
-  // Hide sticky header if the slide already has a heading visible
-  if (heading || !currentHeading) {
+function buildSlideHeaderMap() {
+  const horizontalSlides = document.querySelectorAll(
+    ".reveal .slides > section",
+  );
+  const headingStack: (HeaderInfo | undefined)[] = [];
+
+  horizontalSlides.forEach((hSlide, h) => {
+    const verticalSlides = hSlide.querySelectorAll(":scope > section");
+
+    if (verticalSlides.length === 0) {
+      // Single slide (no vertical stack)
+      processSlide(hSlide, `${h}-0`, headingStack);
+    } else {
+      // Vertical slide stack
+      verticalSlides.forEach((vSlide, v) => {
+        processSlide(vSlide, `${h}-${v}`, headingStack);
+      });
+    }
+  });
+}
+
+function updateStickyHeader(slide: Element) {
+  const header = document.getElementById("sticky-header");
+  if (!header) return;
+
+  // Get current slide indices from Reveal
+  const indices = Reveal.getIndices();
+  const key = `${indices.h}-${indices.v ?? 0}`;
+
+  // Check if this slide has its own heading (should hide sticky header)
+  const hasOwnHeading = slide.querySelector("h1, h2, h3, h4, h5");
+  const applicableHeader = slideHeaderMap.get(key);
+
+  if (hasOwnHeading || !applicableHeader) {
     header.classList.add("hidden");
     header.textContent = "";
   } else {
     header.classList.remove("hidden");
-    header.textContent = currentHeading.text;
-
-    // Update the level class for proper coloring
+    header.textContent = applicableHeader.text;
     header.classList.remove(
       "level-1",
       "level-2",
@@ -181,7 +222,7 @@ function updateStickyHeader(slide: Element) {
       "level-4",
       "level-5",
     );
-    header.classList.add(`level-${currentHeading.level}`);
+    header.classList.add(`level-${applicableHeader.level}`);
   }
 }
 
@@ -214,6 +255,8 @@ document.addEventListener("DOMContentLoaded", () => {
 // Also run when Reveal is ready
 Reveal.on("ready", (event) => {
   applyColorsToMotionCanvasPlayers();
+  // Build the slide-to-header map for sticky headers
+  buildSlideHeaderMap();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   updateStickyHeader((event as any).currentSlide);
 });
