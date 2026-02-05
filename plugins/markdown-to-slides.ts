@@ -1,15 +1,11 @@
-import {
-  readFileSync,
-  writeFileSync,
-  readdirSync,
-  statSync,
-  existsSync,
-  mkdirSync,
-} from "fs";
-import { join, extname, basename, resolve } from "path";
+import { readFileSync, readdirSync, statSync, existsSync } from "fs";
+import { join, extname, basename, resolve, normalize } from "path";
 import matter from "gray-matter";
 import Handlebars from "handlebars";
-import type { Plugin } from "vite";
+import type { Plugin, ViteDevServer, ResolvedConfig } from "vite";
+
+// Virtual file prefix - the \0 tells Vite this is a virtual module
+const VIRTUAL_PREFIX = "\0virtual-slide:";
 
 interface MarkdownFile {
   title: string;
@@ -30,14 +26,12 @@ interface SlidesConfig {
 
 interface Config {
   notesDir: string;
-  outputDir: string;
   templateFile: string;
-  indexFile: string;
   slidesConfig: SlidesConfig;
 }
 
 function loadConfig(): Config {
-  let slidesConfig: SlidesConfig = {
+  const slidesConfig: SlidesConfig = {
     highlight_theme:
       "https://unpkg.com/@catppuccin/highlightjs@1.0.1/css/catppuccin-mocha.css",
     theme: "assets/catppuccin.css",
@@ -48,17 +42,9 @@ function loadConfig(): Config {
 
   return {
     notesDir: "notes",
-    outputDir: "dist",
     templateFile: "templates/template.html",
-    indexFile: "templates/index.html",
     slidesConfig,
   };
-}
-
-function ensureDirectoryExists(dirPath: string): void {
-  if (!existsSync(dirPath)) {
-    mkdirSync(dirPath, { recursive: true });
-  }
 }
 
 function readMarkdownFile(filePath: string): MarkdownFile {
@@ -66,12 +52,13 @@ function readMarkdownFile(filePath: string): MarkdownFile {
   const { data: frontmatter, content: markdownContent } = matter(content);
 
   // Extract title from first heading if not in frontmatter
-  let title = frontmatter.title;
+  let title: string = frontmatter.title as string;
   if (!title) {
     const titleMatch = markdownContent.match(/^#\s+(.+)$/m);
-    title = titleMatch
-      ? titleMatch[1].replace(/<!-- .*? -->/g, "").trim()
-      : basename(filePath, ".md");
+    title =
+      titleMatch && titleMatch[1]
+        ? titleMatch[1].replace(/<!-- .*? -->/g, "").trim()
+        : basename(filePath, ".md");
   }
 
   // Keep raw markdown content for Reveal.js
@@ -85,7 +72,7 @@ function readMarkdownFile(filePath: string): MarkdownFile {
   };
 }
 
-function processMarkdownFiles(config: Config): MarkdownFile[] {
+function getMarkdownFiles(config: Config): MarkdownFile[] {
   const files: MarkdownFile[] = [];
   const notesPath = config.notesDir;
 
@@ -104,7 +91,6 @@ function processMarkdownFiles(config: Config): MarkdownFile[] {
       try {
         const markdownFile = readMarkdownFile(filePath);
         files.push(markdownFile);
-        console.log(`Processed: ${entry}`);
       } catch (error) {
         console.error(`Error processing ${entry}:`, error);
       }
@@ -114,41 +100,27 @@ function processMarkdownFiles(config: Config): MarkdownFile[] {
   return files.sort((a, b) => a.filename.localeCompare(b.filename));
 }
 
-function generateHTMLFiles(
-  markdownFiles: MarkdownFile[],
+function generateHtmlForPage(
+  markdownFile: MarkdownFile,
   config: Config,
-): void {
-  // Ensure output directory exists
-  ensureDirectoryExists(config.outputDir);
-
-  // Read template
+): string {
   if (!existsSync(config.templateFile)) {
-    console.error(`Template file '${config.templateFile}' does not exist`);
-    return;
+    throw new Error(`Template file '${config.templateFile}' does not exist`);
   }
 
   const templateContent = readFileSync(config.templateFile, "utf-8");
   const template = Handlebars.compile(templateContent);
 
-  // Generate HTML files for each markdown file
-  for (const file of markdownFiles) {
-    const templateData = {
-      ...file,
-      ...config.slidesConfig,
-    };
-    const htmlContent = template(templateData, {
-      noEscape: true,
-    });
-    const outputPath = join(config.outputDir, `${file.filename}.html`);
-    writeFileSync(outputPath, htmlContent, "utf-8");
-    console.log(`Generated: ${file.filename}.html`);
-  }
+  const templateData = {
+    ...markdownFile,
+    ...config.slidesConfig,
+  };
+
+  // Template uses {{{content}}} for unescaped content
+  return template(templateData);
 }
 
-function generateIndexFile(
-  markdownFiles: MarkdownFile[],
-  config: Config,
-): void {
+function generateIndexHtml(markdownFiles: MarkdownFile[]): string {
   const indexTemplate = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -248,64 +220,233 @@ function generateIndexFile(
 </html>`;
 
   const template = Handlebars.compile(indexTemplate);
-  const htmlContent = template({
+  return template({
     files: markdownFiles,
     generatedAt: new Date().toLocaleString(),
     count: markdownFiles.length,
   });
-
-  const outputPath = join(config.outputDir, "index.html");
-  writeFileSync(outputPath, htmlContent, "utf-8");
-  console.log("Generated: index.html");
-}
-
-// Global variable to store generated files for config phase
-let generatedHtmlFiles: string[] = [];
-
-function generateHtmlFilesForConfig(): string[] {
-  const config = loadConfig();
-  config.outputDir = ".vite-temp-html";
-
-  // Process all markdown files
-  const markdownFiles = processMarkdownFiles(config);
-
-  if (markdownFiles.length === 0) {
-    return [];
-  }
-
-  // Generate HTML files in temp location
-  generateHTMLFiles(markdownFiles, config);
-  generateIndexFile(markdownFiles, config);
-
-  const fileNames = markdownFiles.map((f) => `${f.filename}.html`);
-  fileNames.push("index.html");
-
-  return fileNames;
 }
 
 export function markdownToSlidesPlugin(): Plugin {
+  const config = loadConfig();
+  let resolvedConfig: ResolvedConfig;
+  let virtualPages: Map<string, MarkdownFile> = new Map();
+
+  // Build the virtual page map from markdown files
+  function refreshVirtualPages() {
+    virtualPages.clear();
+    const markdownFiles = getMarkdownFiles(config);
+    for (const file of markdownFiles) {
+      virtualPages.set(`${file.filename}.html`, file);
+    }
+    // Add index page
+    virtualPages.set("index.html", null as any); // Special marker for index
+    return markdownFiles;
+  }
+
+  // Check if a path is a virtual page
+  function isVirtualPage(urlPath: string): boolean {
+    // Normalize the path - decode URL, remove leading slash and query strings
+    const decoded = decodeURIComponent(urlPath);
+    const cleanPath = decoded.replace(/^\//, "").split("?")[0] ?? "";
+    return virtualPages.has(cleanPath) || cleanPath === "" || cleanPath === "/";
+  }
+
+  // Get the virtual page filename from a URL
+  function getPageFilename(urlPath: string): string {
+    // Decode URL-encoded characters (spaces become %20 in URLs)
+    const decoded = decodeURIComponent(urlPath);
+    const cleanPath = decoded.replace(/^\//, "").split("?")[0] ?? "";
+    if (cleanPath === "" || cleanPath === "/") {
+      return "index.html";
+    }
+    return cleanPath;
+  }
+
   return {
     name: "markdown-to-slides",
+
+    // Provide build inputs configuration
     config() {
-      // Generate HTML files early so they can be used as Vite inputs
-      console.log("Pre-generating HTML files for Vite processing...");
-      generatedHtmlFiles = generateHtmlFilesForConfig();
+      const markdownFiles = refreshVirtualPages();
+      console.log(
+        `[markdown-to-slides] Found ${markdownFiles.length} markdown files`,
+      );
+
+      // Create input entries for all virtual pages
+      const input: Record<string, string> = {};
+      for (const [filename] of virtualPages) {
+        const name = filename
+          .replace(".html", "")
+          .replace(/[^a-zA-Z0-9]/g, "-");
+        input[name] = VIRTUAL_PREFIX + filename;
+      }
+
+      return {
+        // Use custom appType to disable Vite's default HTML handling
+        appType: "custom",
+        build: {
+          rollupOptions: {
+            input,
+          },
+        },
+      };
+    },
+
+    // Store resolved config for later use
+    configResolved(resolved) {
+      resolvedConfig = resolved;
+    },
+
+    // Resolve virtual module IDs
+    resolveId(id) {
+      // Handle virtual prefix from build inputs
+      if (id.startsWith(VIRTUAL_PREFIX)) {
+        const filename = id.slice(VIRTUAL_PREFIX.length);
+        // Return an absolute path for the virtual file
+        const root = resolvedConfig?.root || process.cwd();
+        return resolve(root, filename);
+      }
+      return null;
+    },
+
+    // Load virtual module content
+    load(id) {
+      // Normalize path for cross-platform support
+      const normalizedId = normalize(id).replace(/\\/g, "/");
+      const rootDir = resolvedConfig?.root || process.cwd();
+      const root = normalize(rootDir).replace(/\\/g, "/");
+
+      // Check if this is a virtual page request
+      if (normalizedId.startsWith(root)) {
+        const relativePath = normalizedId.slice(root.length + 1);
+
+        if (relativePath === "index.html") {
+          const markdownFiles = getMarkdownFiles(config);
+          return generateIndexHtml(markdownFiles);
+        }
+
+        const page = virtualPages.get(relativePath);
+        if (page) {
+          return generateHtmlForPage(page, config);
+        }
+      }
+
+      return null;
+    },
+
+    // Configure dev server for serving virtual HTML
+    configureServer(server: ViteDevServer) {
+      const rootDir = resolvedConfig?.root || process.cwd();
+
+      // Watch for changes in notes and templates directories
+      const watchPaths = [
+        join(rootDir, config.notesDir),
+        join(rootDir, "templates"),
+      ];
+
+      // Refresh virtual pages and trigger reload on file changes
+      server.watcher.on("change", (file) => {
+        const normalizedFile = normalize(file).replace(/\\/g, "/");
+        if (
+          normalizedFile.endsWith(".md") ||
+          normalizedFile.includes("templates")
+        ) {
+          console.log(`[markdown-to-slides] File changed: ${file}`);
+          refreshVirtualPages();
+          // Trigger full reload for HTML changes
+          server.ws.send({ type: "full-reload", path: "*" });
+        }
+      });
+
+      // Watch for new/deleted files
+      server.watcher.on("add", (file) => {
+        if (file.endsWith(".md")) {
+          console.log(`[markdown-to-slides] File added: ${file}`);
+          refreshVirtualPages();
+          server.ws.send({ type: "full-reload", path: "*" });
+        }
+      });
+
+      server.watcher.on("unlink", (file) => {
+        if (file.endsWith(".md")) {
+          console.log(`[markdown-to-slides] File removed: ${file}`);
+          refreshVirtualPages();
+          server.ws.send({ type: "full-reload", path: "*" });
+        }
+      });
+
+      // Return post-middleware function (runs after Vite's internal middlewares)
+      return () => {
+        server.middlewares.use(async (req, res, next) => {
+          const url = req.url || "/";
+
+          // Only handle HTML requests for virtual pages
+          if (!url.endsWith(".html") && url !== "/" && !url.endsWith("/")) {
+            return next();
+          }
+
+          const filename = getPageFilename(url);
+
+          if (!isVirtualPage(url)) {
+            return next();
+          }
+
+          try {
+            let html: string;
+
+            if (filename === "index.html") {
+              console.log(`[markdown-to-slides] Serving index page`);
+              const markdownFiles = getMarkdownFiles(config);
+              html = generateIndexHtml(markdownFiles);
+            } else {
+              const page = virtualPages.get(filename);
+              console.log(
+                `[markdown-to-slides] Looking up page: "${filename}", found: ${!!page}`,
+              );
+              if (!page) {
+                console.log(
+                  `[markdown-to-slides] Virtual pages keys:`,
+                  Array.from(virtualPages.keys()),
+                );
+                return next();
+              }
+              html = generateHtmlForPage(page, config);
+              console.log(
+                `[markdown-to-slides] Generated HTML for ${filename}, length: ${html.length}`,
+              );
+            }
+
+            // Transform HTML through Vite's pipeline (handles script imports, etc.)
+            const transformedHtml = await server.transformIndexHtml(url, html);
+
+            res.setHeader("Content-Type", "text/html");
+            res.statusCode = 200;
+            res.end(transformedHtml);
+            console.log(`[markdown-to-slides] Served ${filename} successfully`);
+          } catch (error) {
+            console.error(`[markdown-to-slides] Error serving ${url}:`, error);
+            next(error);
+          }
+        });
+      };
     },
   };
 }
 
+// Export helper to get virtual page inputs for external use
 export function getMarkdownHtmlInputs(): Record<string, string> {
+  const config = loadConfig();
+  const markdownFiles = getMarkdownFiles(config);
   const inputs: Record<string, string> = {};
 
-  if (generatedHtmlFiles.length === 0) {
-    // Generate them if they don't exist yet
-    generatedHtmlFiles = generateHtmlFilesForConfig();
+  for (const file of markdownFiles) {
+    const name = file.filename.replace(/[^a-zA-Z0-9]/g, "-");
+    inputs[name] = VIRTUAL_PREFIX + `${file.filename}.html`;
   }
 
-  generatedHtmlFiles.forEach((file) => {
-    const name = file.replace(".html", "").replace(/[^a-zA-Z0-9]/g, "-");
-    inputs[name] = resolve(process.cwd(), ".vite-temp-html", file);
-  });
+  // Add index
+  inputs["index"] = VIRTUAL_PREFIX + "index.html";
 
   return inputs;
 }

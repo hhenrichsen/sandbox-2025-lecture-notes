@@ -1,31 +1,15 @@
 import { defineConfig } from "vite";
-import { join, resolve } from "path";
-import { existsSync, rmSync } from "fs";
-import {
-  markdownToSlidesPlugin,
-  getMarkdownHtmlInputs,
-} from "./plugins/markdown-to-slides";
+import { resolve } from "path";
+import { markdownToSlidesPlugin } from "./plugins/markdown-to-slides";
 import { motionCanvasUrlsPlugin } from "./plugins/motion-canvas-urls";
 
 export default defineConfig({
-  plugins: [
-    markdownToSlidesPlugin(),
-    motionCanvasUrlsPlugin(),
-    {
-      name: "remove-vite-temp-html",
-      writeBundle() {
-        if (existsSync(".vite-temp-html")) {
-          rmSync(".vite-temp-html", { recursive: true });
-        }
-      },
-    },
-  ],
+  plugins: [markdownToSlidesPlugin(), motionCanvasUrlsPlugin()],
   build: {
     outDir: "dist",
     rollupOptions: {
       input: {
         presentation: resolve(__dirname, "src/presentation.ts"),
-        ...getMarkdownHtmlInputs(),
       },
     },
   },
