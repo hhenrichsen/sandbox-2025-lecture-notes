@@ -1,3 +1,10 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Motion Canvas Test](#motion-canvas-test)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Motion Canvas Test
 
 <!-- vslide -->
