@@ -4,8 +4,8 @@ import "@motion-canvas/core";
 import "@motion-canvas/player";
 import Reveal from "reveal.js";
 import RevealNotes from "reveal.js/plugin/notes/notes.js";
-import RevealMarkdown from "reveal.js/plugin/markdown/markdown.js";
 import RevealZoom from "reveal.js/plugin/zoom/zoom.js";
+// Note: RevealMarkdown is no longer needed - markdown is pre-processed at build time
 
 // Default dark theme colors (fallback)
 const defaultColors = {
@@ -295,18 +295,14 @@ function updateStickyHeader(slide: Element) {
   }
 }
 
-let plugins = [RevealMarkdown, RevealNotes, RevealZoom];
+let plugins = [RevealNotes, RevealZoom];
 
-// If there are code blocks (```), add the highlight plugin:
-if (document.querySelector("textarea[data-template]")) {
-  const template = document.querySelector(
-    "textarea[data-template]",
-  )?.textContent;
-  if (template?.includes("```")) {
-    const { default: RevealHighlight } =
-      await import("reveal.js/plugin/highlight/highlight.js");
-    plugins.push(RevealHighlight);
-  }
+// If there are code blocks, add the highlight plugin
+// Since markdown is pre-processed, code blocks are already <pre><code> elements
+if (document.querySelector("pre code")) {
+  const { default: RevealHighlight } =
+    await import("reveal.js/plugin/highlight/highlight.js");
+  plugins.push(RevealHighlight);
 }
 
 Reveal.initialize({

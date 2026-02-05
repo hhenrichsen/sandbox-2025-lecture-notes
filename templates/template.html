@@ -15,16 +15,8 @@
   <body>
     <div class="reveal">
       <div class="slides">
-        <section
-          data-markdown
-          data-separator="{{separator}}"
-          data-separator-vertical="{{separator_vertical}}"
-          data-separator-notes="{{separator_notes}}"
-        >
-          <textarea data-template>
-{{{content}}}
-          </textarea>
-        </section>
+        <!-- Pre-rendered slides (markdown processed at build time) -->
+        {{{slides}}}
       </div>
     </div>
     <div id="sticky-header" class="sticky-header"></div>

@@ -4,12 +4,244 @@ import matter from "gray-matter";
 import Handlebars from "handlebars";
 import type { Plugin, ViteDevServer, ResolvedConfig } from "vite";
 
+// Unified ecosystem imports
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import type { Element } from "hast";
+import type { Code } from "mdast";
+import { visit } from "unist-util-visit";
+import { defaultHandlers, type State } from "mdast-util-to-hast";
+
 // Virtual file prefix - the \0 tells Vite this is a virtual module
 const VIRTUAL_PREFIX = "\0virtual-slide:";
+
+// Match line numbers syntax: [1,4-8] or [25: 1,4-8]
+const CODE_LINE_NUMBER_REGEX = /\[\s*((\d*):)?\s*([\s\d,|-]*)\]/;
+
+/**
+ * Rehype plugin that adds Reveal.js line number attributes to code blocks.
+ * Reads the meta string from data-meta attribute (preserved by custom code handler)
+ * and parses [1,4-8] or [25: 1,4-8] syntax for line highlighting.
+ *
+ * Note: Syntax highlighting is handled at runtime by Reveal.js's highlight plugin.
+ */
+function rehypeRevealCodeBlocks() {
+  return (tree: any) => {
+    visit(tree, "element", (node: Element) => {
+      // Look for <pre> elements with data-meta attribute
+      if (node.tagName !== "pre") return;
+
+      const codeElement = node.children?.find(
+        (child): child is Element =>
+          child.type === "element" && child.tagName === "code",
+      );
+
+      if (!codeElement) return;
+
+      // Get meta string from data-meta attribute (set by custom code handler)
+      const meta = node.properties?.["data-meta"];
+      if (typeof meta !== "string") return;
+
+      // Parse line number syntax from meta string
+      const match = meta.match(CODE_LINE_NUMBER_REGEX);
+      if (match) {
+        codeElement.properties = codeElement.properties || {};
+        
+        // Extract starting line number offset (e.g., [25: 1,4-8] -> 25)
+        if (match[2]) {
+          codeElement.properties["data-ln-start-from"] = match[2].trim();
+        }
+        
+        // Extract line numbers to highlight (e.g., [1,4-8] or [1-3|5-9])
+        if (match[3]) {
+          codeElement.properties["data-line-numbers"] = match[3].trim();
+        }
+      }
+
+      // Remove data-meta from output (it was just for internal use)
+      delete node.properties?.["data-meta"];
+    });
+  };
+}
+
+/**
+ * Custom code handler for remark-rehype that preserves the meta string.
+ * The meta string contains line number syntax like [1,4-8] which we need
+ * for Reveal.js highlighting.
+ */
+function codeHandler(state: State, node: Code) {
+  const result = defaultHandlers.code(state, node);
+  
+  // Preserve meta string as data-meta attribute on the <pre> element
+  if (node.meta && result && result.type === "element") {
+    result.properties = result.properties || {};
+    result.properties["data-meta"] = node.meta;
+  }
+  
+  return result;
+}
+
+/**
+ * Create the unified processor pipeline for markdown to HTML conversion.
+ *
+ * Pipeline:
+ * 1. remarkParse - Parse markdown to MDAST
+ * 2. remarkRehype - Convert MDAST to HAST (with custom code handler)
+ * 3. rehypeRevealCodeBlocks - Add Reveal.js line number attributes from meta
+ * 4. rehypeStringify - Serialize HAST to HTML string
+ *
+ * Note: Syntax highlighting is handled at runtime by Reveal.js's highlight plugin,
+ * keeping this pipeline synchronous.
+ */
+function createMarkdownProcessor() {
+  return unified()
+    .use(remarkParse)
+    .use(remarkRehype, {
+      allowDangerousHtml: true,
+      handlers: {
+        code: codeHandler,
+      },
+    })
+    .use(rehypeRevealCodeBlocks)
+    .use(rehypeStringify, { allowDangerousHtml: true });
+}
+
+// Shared processor instance (created lazily)
+let markdownProcessor: ReturnType<typeof createMarkdownProcessor> | null = null;
+
+function getProcessor() {
+  if (!markdownProcessor) {
+    markdownProcessor = createMarkdownProcessor();
+  }
+  return markdownProcessor;
+}
+
+/**
+ * Convert markdown to HTML using the unified processor.
+ */
+async function markdownToHtml(markdown: string): Promise<string> {
+  const processor = getProcessor();
+  const result = await processor.process(markdown);
+  return String(result);
+}
+
+/**
+ * Synchronous version for compatibility with existing code.
+ * Uses processSync which blocks but works in non-async contexts.
+ */
+function markdownToHtmlSync(markdown: string): string {
+  const processor = getProcessor();
+  const result = processor.processSync(markdown);
+  return String(result);
+}
+
+/**
+ * Split markdown content into slides based on separators.
+ * Replicates reveal.js markdown plugin's slidify() function.
+ */
+function slidifyMarkdown(
+  markdown: string,
+  separator: string,
+  verticalSeparator: string | null,
+  notesSeparator: string,
+): string {
+  const separatorRegex = new RegExp(
+    separator + (verticalSeparator ? "|" + verticalSeparator : ""),
+    "mg",
+  );
+  const horizontalSeparatorRegex = new RegExp(separator);
+  const notesRegex = new RegExp(notesSeparator, "mgi");
+
+  let matches;
+  let lastIndex = 0;
+  let isHorizontal;
+  let wasHorizontal = true;
+  let content;
+  const sectionStack: (string | string[])[] = [];
+
+  // Iterate until all blocks between separators are stacked up
+  while ((matches = separatorRegex.exec(markdown))) {
+    // Determine direction (horizontal by default)
+    isHorizontal = horizontalSeparatorRegex.test(matches[0]);
+
+    if (!isHorizontal && wasHorizontal) {
+      // Create vertical stack
+      sectionStack.push([]);
+    }
+
+    // Pluck slide content from markdown input
+    content = markdown.substring(lastIndex, matches.index);
+
+    if (isHorizontal && wasHorizontal) {
+      // Add to horizontal stack
+      sectionStack.push(content);
+    } else {
+      // Add to vertical stack
+      (sectionStack[sectionStack.length - 1] as string[]).push(content);
+    }
+
+    lastIndex = separatorRegex.lastIndex;
+    wasHorizontal = isHorizontal;
+  }
+
+  // Add the remaining slide
+  const remaining = markdown.substring(lastIndex);
+  if (wasHorizontal) {
+    sectionStack.push(remaining);
+  } else {
+    (sectionStack[sectionStack.length - 1] as string[]).push(remaining);
+  }
+
+  // Build HTML sections
+  let sectionsHtml = "";
+
+  for (let i = 0; i < sectionStack.length; i++) {
+    const item = sectionStack[i];
+    if (!item) continue;
+
+    if (Array.isArray(item)) {
+      // Vertical slide stack
+      sectionsHtml += "<section>";
+      for (const child of item) {
+        sectionsHtml += renderSlideSection(child, notesRegex);
+      }
+      sectionsHtml += "</section>";
+    } else {
+      // Single horizontal slide
+      sectionsHtml += renderSlideSection(item, notesRegex);
+    }
+  }
+
+  return sectionsHtml;
+}
+
+/**
+ * Render a single slide section with notes extraction and markdown conversion.
+ * Uses the unified processor (remark/rehype) for markdown to HTML conversion.
+ */
+function renderSlideSection(content: string, notesRegex: RegExp): string {
+  // Extract speaker notes
+  const notesParts = content.split(notesRegex);
+  const slideContent = notesParts[0] ?? "";
+  let notesHtml = "";
+
+  if (notesParts.length > 1 && notesParts[1]) {
+    // Convert notes markdown to HTML using unified
+    notesHtml = `<aside class="notes">${markdownToHtmlSync(notesParts[1].trim())}</aside>`;
+  }
+
+  // Convert main content markdown to HTML using unified
+  const slideHtml = markdownToHtmlSync(slideContent.trim());
+
+  return `<section>${slideHtml}${notesHtml}</section>`;
+}
 
 interface MarkdownFile {
   title: string;
   content: string; // Raw markdown content
+  slides?: string; // Pre-rendered HTML slides
   author?: string;
   description?: string;
   generatedAt: string;
@@ -47,7 +279,7 @@ function loadConfig(): Config {
   };
 }
 
-function readMarkdownFile(filePath: string): MarkdownFile {
+function readMarkdownFile(filePath: string, config: Config): MarkdownFile {
   const content = readFileSync(filePath, "utf-8");
   const { data: frontmatter, content: markdownContent } = matter(content);
 
@@ -61,10 +293,18 @@ function readMarkdownFile(filePath: string): MarkdownFile {
         : basename(filePath, ".md");
   }
 
-  // Keep raw markdown content for Reveal.js
+  // Pre-render markdown to HTML slides at build time
+  const slides = slidifyMarkdown(
+    markdownContent,
+    config.slidesConfig.separator,
+    config.slidesConfig.separator_vertical,
+    config.slidesConfig.separator_notes,
+  );
+
   return {
     title: title,
-    content: markdownContent, // Raw markdown content
+    content: markdownContent, // Keep raw content for reference
+    slides: slides, // Pre-rendered HTML slides
     author: frontmatter.author,
     description: frontmatter.description,
     generatedAt: new Date().toLocaleString(),
@@ -89,7 +329,7 @@ function getMarkdownFiles(config: Config): MarkdownFile[] {
 
     if (stat.isFile() && extname(entry) === ".md") {
       try {
-        const markdownFile = readMarkdownFile(filePath);
+        const markdownFile = readMarkdownFile(filePath, config);
         files.push(markdownFile);
       } catch (error) {
         console.error(`Error processing ${entry}:`, error);
