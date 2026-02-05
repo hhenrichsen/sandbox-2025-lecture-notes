@@ -42,11 +42,11 @@ export default makeScene2D(function* (view) {
     <Circle ref={circle} size={320} fill={colors.yellow} lineWidth={8} />,
   );
   const task = yield loop(() => circle().scale(2, 2).to(1, 2));
-  yield* beginSlide('next');
+  yield* beginSlide("next");
   cancel(task);
   yield circle().scale(1, 1);
   yield loop(() => circle().fill(colors.red, 2).to(colors.yellow, 2));
-  yield* beginSlide('end');
+  yield* beginSlide("end");
   yield* circle().fill(colors.yellow, 1);
 });
 ```

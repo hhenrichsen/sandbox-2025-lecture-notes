@@ -133,8 +133,7 @@ export class MotionCanvasPresenter {
 
     // Use unique scene name based on provided ID or generate one
     scene.name =
-      sceneId ||
-      `scene-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      sceneId || `scene-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
     // Create fresh onReplaced dispatcher for this instance
     scene.onReplaced = new ValueDispatcher(scene);

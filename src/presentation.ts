@@ -5,10 +5,7 @@ import "@motion-canvas/player";
 import Reveal from "reveal.js";
 import RevealNotes from "reveal.js/plugin/notes/notes.js";
 import RevealZoom from "reveal.js/plugin/zoom/zoom.js";
-import {
-  colorConfig,
-  defaultColors,
-} from "virtual:motion-canvas-color-config";
+import { colorConfig, defaultColors } from "virtual:motion-canvas-color-config";
 
 // Expose Reveal globally for Motion Canvas runtime integration
 (window as unknown as { Reveal: typeof Reveal }).Reveal = Reveal;
@@ -20,7 +17,15 @@ function getCSSVariables(): Record<string, string> {
   const colors: Record<string, string> = {};
 
   colorConfig.forEach(
-    ({ name, cssVar, fallback }: { name: string; cssVar: string; fallback: string }) => {
+    ({
+      name,
+      cssVar,
+      fallback,
+    }: {
+      name: string;
+      cssVar: string;
+      fallback: string;
+    }) => {
       const value = computedStyle.getPropertyValue(`--${cssVar}`).trim();
       colors[name] = value || fallback;
     },
