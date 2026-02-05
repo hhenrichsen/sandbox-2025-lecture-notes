@@ -21,15 +21,7 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Install animations dependencies
-        run: bun install
-        working-directory: animations
-
-      - name: Build animations
-        run: bun run build
-        working-directory: animations
-
-      - name: Install root dependencies
+      - name: Install dependencies
         run: bun install
 
       - name: Build notes

@@ -5,35 +5,13 @@ import "@motion-canvas/player";
 import Reveal from "reveal.js";
 import RevealNotes from "reveal.js/plugin/notes/notes.js";
 import RevealZoom from "reveal.js/plugin/zoom/zoom.js";
-// Note: RevealMarkdown is no longer needed - markdown is pre-processed at build time
+import {
+  colorConfig,
+  defaultColors,
+} from "virtual:motion-canvas-color-config";
 
-// Default dark theme colors (fallback)
-const defaultColors = {
-  base: "#1e1e2e",
-  text: "#cdd6f4",
-  pink: "#f5c2e7",
-  mauve: "#cba6f7",
-  red: "#f38ba8",
-  maroon: "#eba0ac",
-  peach: "#fab387",
-  yellow: "#f9e2af",
-  green: "#a6e3a1",
-  teal: "#94e2d5",
-  sky: "#89dceb",
-  sapphire: "#74c7ec",
-  blue: "#89b4fa",
-  lavender: "#b4befe",
-  subtext1: "#bac2de",
-  subtext0: "#a6adc8",
-  overlay2: "#9399b2",
-  overlay1: "#7f849c",
-  overlay0: "#6c7086",
-  surface2: "#585b70",
-  surface1: "#45475a",
-  surface0: "#313244",
-  mantle: "#181825",
-  crust: "#11111b",
-};
+// Expose Reveal globally for Motion Canvas runtime integration
+(window as unknown as { Reveal: typeof Reveal }).Reveal = Reveal;
 
 // Function to read CSS variables from root element
 function getCSSVariables(): Record<string, string> {
@@ -41,49 +19,16 @@ function getCSSVariables(): Record<string, string> {
   const computedStyle = getComputedStyle(root);
   const colors: Record<string, string> = {};
 
-  // List of color variables to extract
-  const colorVars = [
-    "base",
-    "text",
-    "pink",
-    "mauve",
-    "red",
-    "maroon",
-    "peach",
-    "yellow",
-    "green",
-    "teal",
-    "sky",
-    "sapphire",
-    "blue",
-    "lavender",
-    "subtext1",
-    "subtext0",
-    "overlay2",
-    "overlay1",
-    "overlay0",
-    "surface2",
-    "surface1",
-    "surface0",
-    "mantle",
-    "crust",
-  ];
-
-  colorVars.forEach((varName) => {
-    const value = computedStyle.getPropertyValue(`--${varName}`).trim();
-    if (value) {
-      colors[varName] = value;
-    } else {
-      // Fallback to default if not found
-      colors[varName] =
-        defaultColors[varName as keyof typeof defaultColors] || "";
-    }
-  });
+  colorConfig.forEach(
+    ({ name, cssVar, fallback }: { name: string; cssVar: string; fallback: string }) => {
+      const value = computedStyle.getPropertyValue(`--${cssVar}`).trim();
+      colors[name] = value || fallback;
+    },
+  );
 
   return colors;
 }
 
-// Function to apply colors to motion-canvas-player elements
 function applyColorsToMotionCanvasPlayers() {
   const colors = getCSSVariables();
   const players = document.querySelectorAll("motion-canvas-player");
@@ -96,24 +41,25 @@ function applyColorsToMotionCanvasPlayers() {
   });
 }
 
-// Function to handle theme changes
+function updatePresenterColors() {
+  const colors = getCSSVariables();
+  window.dispatchEvent(
+    new CustomEvent("motion-canvas-colors-changed", {
+      detail: { colors },
+    }),
+  );
+}
+
 function handleThemeChange() {
-  // Listen for changes in color scheme preference
   const mediaQuery = window.matchMedia("(prefers-color-scheme: light)");
 
   const updateTheme = () => {
-    // Apply colors to existing players
     applyColorsToMotionCanvasPlayers();
+    updatePresenterColors();
   };
 
-  // Update on initial load
   updateTheme();
-
-  // Listen for changes
   mediaQuery.addEventListener("change", updateTheme);
-
-  // Also listen for manual theme changes (if you add theme toggle later)
-  // You can dispatch a custom event when theme changes
   window.addEventListener("themechange", updateTheme);
 }
 
@@ -318,13 +264,19 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Also run when Reveal is ready
-Reveal.on("ready", (event) => {
+Reveal.on("ready", async (event) => {
   applyColorsToMotionCanvasPlayers();
   layoutMediaElements();
   // Build the slide-to-header map for sticky headers
   buildSlideHeaderMap();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   updateStickyHeader((event as any).currentSlide);
+
+  // Initialize Motion Canvas runtime now that Reveal is ready
+  // This must happen after Reveal is initialized so the runtime can integrate
+  const { initializeMotionCanvas } =
+    await import("virtual:motion-canvas-runtime");
+  initializeMotionCanvas();
 });
 
 // Re-apply colors, layout, and update sticky header when slides change
@@ -338,4 +290,10 @@ Reveal.on("slidechanged", (event) => {
 // Re-layout media elements when window is resized
 Reveal.on("resize", () => {
   layoutMediaElements();
+});
+
+// Re-layout when motion canvas animations are initialized (canvases created)
+window.addEventListener("motion-canvas-initialized", () => {
+  layoutMediaElements();
+  Reveal.layout();
 });

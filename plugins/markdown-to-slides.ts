@@ -14,6 +14,11 @@ import type { Code } from "mdast";
 import { visit } from "unist-util-visit";
 import { defaultHandlers, type State } from "mdast-util-to-hast";
 
+// Motion Canvas plugin imports
+import { remarkMotionCanvas } from "./remark-motion-canvas";
+import { registerMotionCanvasBlocks } from "./vite-motion-canvas";
+import type { MotionCanvasBlock } from "./remark-motion-canvas";
+
 // Virtual file prefix - the \0 tells Vite this is a virtual module
 const VIRTUAL_PREFIX = "\0virtual-slide:";
 
@@ -48,12 +53,12 @@ function rehypeRevealCodeBlocks() {
       const match = meta.match(CODE_LINE_NUMBER_REGEX);
       if (match) {
         codeElement.properties = codeElement.properties || {};
-        
+
         // Extract starting line number offset (e.g., [25: 1,4-8] -> 25)
         if (match[2]) {
           codeElement.properties["data-ln-start-from"] = match[2].trim();
         }
-        
+
         // Extract line numbers to highlight (e.g., [1,4-8] or [1-3|5-9])
         if (match[3]) {
           codeElement.properties["data-line-numbers"] = match[3].trim();
@@ -73,13 +78,13 @@ function rehypeRevealCodeBlocks() {
  */
 function codeHandler(state: State, node: Code) {
   const result = defaultHandlers.code(state, node);
-  
+
   // Preserve meta string as data-meta attribute on the <pre> element
   if (node.meta && result && result.type === "element") {
     result.properties = result.properties || {};
     result.properties["data-meta"] = node.meta;
   }
-  
+
   return result;
 }
 
@@ -88,9 +93,10 @@ function codeHandler(state: State, node: Code) {
  *
  * Pipeline:
  * 1. remarkParse - Parse markdown to MDAST
- * 2. remarkRehype - Convert MDAST to HAST (with custom code handler)
- * 3. rehypeRevealCodeBlocks - Add Reveal.js line number attributes from meta
- * 4. rehypeStringify - Serialize HAST to HTML string
+ * 2. remarkMotionCanvas - Extract motion-canvas blocks and replace with placeholders
+ * 3. remarkRehype - Convert MDAST to HAST (with custom code handler)
+ * 4. rehypeRevealCodeBlocks - Add Reveal.js line number attributes from meta
+ * 5. rehypeStringify - Serialize HAST to HTML string
  *
  * Note: Syntax highlighting is handled at runtime by Reveal.js's highlight plugin,
  * keeping this pipeline synchronous.
@@ -98,6 +104,7 @@ function codeHandler(state: State, node: Code) {
 function createMarkdownProcessor() {
   return unified()
     .use(remarkParse)
+    .use(remarkMotionCanvas)
     .use(remarkRehype, {
       allowDangerousHtml: true,
       handlers: {
@@ -130,10 +137,20 @@ async function markdownToHtml(markdown: string): Promise<string> {
 /**
  * Synchronous version for compatibility with existing code.
  * Uses processSync which blocks but works in non-async contexts.
+ * Also registers any extracted motion-canvas blocks with the Vite plugin.
  */
-function markdownToHtmlSync(markdown: string): string {
+function markdownToHtmlSync(markdown: string, filePath?: string): string {
   const processor = getProcessor();
-  const result = processor.processSync(markdown);
+  const result = processor.processSync({ value: markdown, path: filePath });
+
+  // Register any extracted motion-canvas blocks
+  const blocks = result.data.motionCanvasBlocks as
+    | MotionCanvasBlock[]
+    | undefined;
+  if (blocks && blocks.length > 0) {
+    registerMotionCanvasBlocks(blocks);
+  }
+
   return String(result);
 }
 

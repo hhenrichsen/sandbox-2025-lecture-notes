@@ -1,12 +1,13 @@
-import {
-  Color,
-  createSignal,
-  SimpleSignal,
-  useScene,
-} from "@motion-canvas/core";
+/**
+ * Shared color utilities for Motion Canvas animations.
+ * Provides Catppuccin Mocha theme colors that can be used in embedded animations.
+ */
 
-// Default dark theme colors (fallback)
-const defaultColors = {
+import { Color, createSignal, useScene } from "@motion-canvas/core";
+import type { SimpleSignal } from "@motion-canvas/core/lib/signals";
+
+// Default dark theme colors (Catppuccin Mocha)
+export const defaultColors = {
   base: "#1e1e2e",
   text: "#cdd6f4",
   pink: "#f5c2e7",
@@ -31,7 +32,7 @@ const defaultColors = {
   surface0: "#313244",
   mantle: "#181825",
   crust: "#11111b",
-};
+} as const;
 
 // Type for color names
 export type ColorName = keyof typeof defaultColors;
@@ -65,8 +66,18 @@ export interface ColorPalette {
 }
 
 /**
- * Get the current color palette from scene variables
- * Falls back to default dark theme colors if not available
+ * Get a simple color value (no signals).
+ * Use this when you don't need reactive updates.
+ */
+export function getStaticColors(): ColorPalette {
+  return { ...defaultColors };
+}
+
+/**
+ * Get the current color palette from scene variables.
+ * Falls back to default dark theme colors if not available.
+ *
+ * Use this inside Motion Canvas scenes for reactive color support.
  */
 export function getColors(): Record<ColorName, SimpleSignal<Color>> {
   try {
@@ -116,17 +127,14 @@ export function getColors(): Record<ColorName, SimpleSignal<Color>> {
         }
       });
 
-      // Merge with defaults to ensure all colors are present
-      return { ...defaultColors, ...colors } as Record<
-        ColorName,
-        SimpleSignal<Color>
-      >;
+      // Return all colors as signals
+      return colors as Record<ColorName, SimpleSignal<Color>>;
     }
   } catch (error) {
     console.warn("Failed to read colors from scene variables:", error);
   }
 
-  // Return default colors as fallback
+  // Return default colors as fallback (as signals)
   return Object.fromEntries(
     Object.entries(defaultColors).map(([key, value]) => [
       key,
