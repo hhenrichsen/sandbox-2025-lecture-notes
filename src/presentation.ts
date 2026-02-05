@@ -143,6 +143,75 @@ function observeMotionCanvasPlayers() {
   });
 }
 
+// Calculate remaining height for an element on a slide (similar to Reveal.js util)
+function getRemainingHeight(element: Element, slideHeight: number): number {
+  const htmlElement = element as HTMLElement;
+  const parent = htmlElement.parentNode as HTMLElement;
+  if (!parent) return slideHeight;
+
+  // Store original height
+  const oldHeight = htmlElement.style.height;
+
+  // Temporarily set element height to 0 to measure other content
+  htmlElement.style.height = "0px";
+
+  // Temporarily set parent to auto height
+  const oldParentHeight = parent.style.height;
+  parent.style.height = "auto";
+
+  // Calculate remaining height
+  const remainingHeight = slideHeight - parent.offsetHeight;
+
+  // Restore original styles
+  htmlElement.style.height = oldHeight;
+  parent.style.height = oldParentHeight;
+
+  return remainingHeight;
+}
+
+// Layout media elements with shrink-only behavior for code blocks
+function layoutMediaElements() {
+  const config = Reveal.getConfig();
+  const slideHeight = (config.height as number) || 700;
+
+  // Get all slide sections (both horizontal and vertical)
+  const slides = document.querySelectorAll(".reveal .slides section");
+
+  slides.forEach((slide) => {
+    // Handle code blocks - shrink only, don't grow
+    // Use :scope > pre to only get direct children (top-level code blocks)
+    slide.querySelectorAll(":scope > pre").forEach((pre) => {
+      const htmlPre = pre as HTMLElement;
+      const htmlCode = htmlPre.querySelector("code") as HTMLElement | null;
+      if (!htmlCode) return;
+
+      // Clear any previously set max-height to measure natural height
+      htmlCode.style.maxHeight = "";
+
+      const remainingHeight = getRemainingHeight(pre, slideHeight);
+      const naturalHeight = htmlPre.scrollHeight;
+
+      // Only constrain if natural height exceeds available space
+      if (naturalHeight > remainingHeight && remainingHeight > 0) {
+        // Account for pre padding (--pre-padding: 2rem = ~32px each side)
+        // and code padding (2rem top/bottom = ~64px)
+        const codeMaxHeight = remainingHeight - 96;
+        htmlCode.style.maxHeight = Math.max(codeMaxHeight, 100) + "px";
+      }
+      // Don't set maxHeight for small code blocks - let CSS default handle it
+    });
+
+    // Handle motion-canvas-player elements - these should stretch to fill
+    slide
+      .querySelectorAll(":scope > motion-canvas-player")
+      .forEach((player) => {
+        if (!player.classList.contains("r-stretch")) {
+          player.classList.add("r-stretch");
+        }
+      });
+  });
+}
+
 // Sticky header - pre-computed mapping of slides to their applicable headers
 interface HeaderInfo {
   text: string;
@@ -255,15 +324,22 @@ document.addEventListener("DOMContentLoaded", () => {
 // Also run when Reveal is ready
 Reveal.on("ready", (event) => {
   applyColorsToMotionCanvasPlayers();
+  layoutMediaElements();
   // Build the slide-to-header map for sticky headers
   buildSlideHeaderMap();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   updateStickyHeader((event as any).currentSlide);
 });
 
-// Re-apply colors and update sticky header when slides change
+// Re-apply colors, layout, and update sticky header when slides change
 Reveal.on("slidechanged", (event) => {
   applyColorsToMotionCanvasPlayers();
+  layoutMediaElements();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   updateStickyHeader((event as any).currentSlide);
+});
+
+// Re-layout media elements when window is resized
+Reveal.on("resize", () => {
+  layoutMediaElements();
 });
