@@ -10,14 +10,8 @@
   - [Assignments](#assignments)
     - [Assignment Policy](#assignment-policy)
     - [Assignment Descriptions](#assignment-descriptions)
-      - [Continuous Integration (10pts / 10%)](#continuous-integration-10pts--10)
-      - [Continuous Delivery (10pts / 10%)](#continuous-delivery-10pts--10)
-      - [Observability (10pts / 10%)](#observability-10pts--10)
-      - [Check In 2 (60pts / 60%)](#check-in-2-60pts--60)
-      - [Participation (5pts / 5%)](#participation-5pts--5)
-      - [Attendance (5pts / 5%)](#attendance-5pts--5)
   - [Honor Code](#honor-code)
-  - [Preventing \& Responding to Sexual Misconduct](#preventing--responding-to-sexual-misconduct)
+  - [Preventing & Responding to Sexual Misconduct](#preventing--responding-to-sexual-misconduct)
   - [Student Disability](#student-disability)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->

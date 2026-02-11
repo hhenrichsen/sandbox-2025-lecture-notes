@@ -7,20 +7,15 @@ _by Hunter Henrichsen_
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [19 - Scaling](#19---scaling)
-  - [Pre-Lecture](#pre-lecture)
-    - [Links](#links)
-    - [Events](#events)
-    - [Attendance Quiz](#attendance-quiz)
-    - [News](#news)
-  - [Questions from Last Time](#questions-from-last-time)
-  - [Scaling](#scaling)
-    - [Vertical Scaling](#vertical-scaling)
-    - [Horizontal Scaling](#horizontal-scaling)
-      - [Load Balancing](#load-balancing)
-      - [Message Queues](#message-queues)
-        - [Dead Letter Queues](#dead-letter-queues)
-      - [Sharding](#sharding)
+- [Pre-Lecture](#pre-lecture)
+  - [Links](#links)
+  - [Events](#events)
+  - [Attendance Quiz](#attendance-quiz)
+  - [News](#news)
+- [Questions from Last Time](#questions-from-last-time)
+- [Scaling](#scaling)
+  - [Vertical Scaling](#vertical-scaling)
+  - [Horizontal Scaling](#horizontal-scaling)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
