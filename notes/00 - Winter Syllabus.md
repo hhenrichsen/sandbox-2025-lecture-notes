@@ -10,8 +10,14 @@
   - [Assignments](#assignments)
     - [Assignment Policy](#assignment-policy)
     - [Assignment Descriptions](#assignment-descriptions)
+      - [Continuous Integration (10pts / 10%)](#continuous-integration-10pts--10)
+      - [Continuous Delivery (10pts / 10%)](#continuous-delivery-10pts--10)
+      - [Observability (10pts / 10%)](#observability-10pts--10)
+      - [Check In 2 (60pts / 60%)](#check-in-2-60pts--60)
+      - [Participation (5pts / 5%)](#participation-5pts--5)
+      - [Attendance (5pts / 5%)](#attendance-5pts--5)
   - [Honor Code](#honor-code)
-  - [Preventing & Responding to Sexual Misconduct](#preventing--responding-to-sexual-misconduct)
+  - [Preventing \& Responding to Sexual Misconduct](#preventing--responding-to-sexual-misconduct)
   - [Student Disability](#student-disability)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -24,29 +30,29 @@
 
 | Date          | Topic                              | Lecture Number |
 | ------------- | ---------------------------------- | -------------- |
-| January 7th   | Syllabus Review                    | 13             |
-| January 14th  | Continuous Integration and Testing | 14             |
-| January 21st  | Deployment                         | 15             |
-| January 28th  | _Workshop Day (Q&A + Groups)_      | 16             |
+| January 7th   | Syllabus Review                    | 14             |
+| January 14th  | Continuous Integration and Testing | 15             |
+| January 21st  | Deployment                         | 16             |
+| January 28th  | _Workshop Day (Q&A + Groups)_      | 17             |
 | January 30th  | CI Assignment Due                  |                |
-| February 4th  | Continuous Delivery                | 17             |
-| February 11th | Performance                        | 18             |
-| February 18th | Guest Speaker:                     | 19             |
-| February 25th | _Workshop Day (Q&A + Groups)_      | 20             |
+| February 4th  | Performance                        | 18             |
+| February 11th | Scaling                            | 19             |
+| February 18th | AI Tools                           | 20             |
+| February 25th | _Workshop Day (Q&A + Groups)_      | 21             |
 | February 27th | CD Assignment Due                  |                |
 
 <!-- vslide -->
 
 | Date       | Topic                                         | Lecture Number |
 | ---------- | --------------------------------------------- | -------------- |
-| March 4th  | Observability                                 | 21             |
-| March 11th | Building Agentic Systems                      | 22             |
-| March 18th | Guest Speaker:                                | 23             |
-| March 25th | _Workshop Day (Q&A + Groups)_                 | 24             |
+| March 4th  | Observability                                 | 22             |
+| March 11th | Building Agentic Systems                      | 23             |
+| March 18th | Guest Speaker:                                | 24             |
+| March 25th | _Workshop Day (Q&A + Groups)_                 | 25             |
 | March 27th | Observability Assignment Due                  |                |
-| April 1st  | Guest Speaker:                                | 25             |
-| April 8th  | _Workshop Day (Q&A + Groups)_                 | 26             |
-| April 15th | Retrospective                                 | 27             |
+| April 1st  | Guest Speaker:                                | 26             |
+| April 8th  | _Workshop Day (Q&A + Groups)_                 | 27             |
+| April 15th | Retrospective                                 | 28             |
 | April 22nd | Participation, Attendance, and Check In 2 Due |                |
 
 <!-- slide -->
