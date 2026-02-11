@@ -58,14 +58,16 @@ _by Hunter Henrichsen_
 <!-- notes -->
 
 I tend to hear a lot of concern about scaling. And that's valid, given recent
-events, like the AI.com launch during the superbowl. That said, you can get a 
+events, like the AI.com launch during the superbowl. That said, you can get a
 surprising amount of scale out of a single server.
 
 If you're worried about that still, you might look at tools like `JMeter` or
 `k6` to test your application's scalability under load. I recommend pairing this
 with observability tools like we'll be talking about later this semester.
 
-We'll be working out of [this document](https://lucid.app/lucidchart/5e2ee4b0-6354-49e3-ae0e-636572458a16/view) today.
+We'll be working out of
+[this document](https://lucid.app/lucidchart/5e2ee4b0-6354-49e3-ae0e-636572458a16/view)
+today.
 
 <!-- vslide -->
 
@@ -84,8 +86,8 @@ remain just running a single instance of your application.
 <!-- notes -->
 
 Horizontal scaling is the process of adding more servers to your application.
-This lets you handle more than a single server can work with, but also
-normally requires more than just "another server".
+This lets you handle more than a single server can work with, but also normally
+requires more than just "another server".
 
 <!-- vslide -->
 
@@ -98,8 +100,8 @@ route traffic to the appropriate server, which normally needs... you guessed it,
 a load balancing server.
 
 This will vary a lot depending on your application, and there are a bunch of
-different strategies for routing traffic. There's a lot of theory here;
-both [GitHub](https://github.blog/engineering/introducing-glb/) and 
+different strategies for routing traffic. There's a lot of theory here; both
+[GitHub](https://github.blog/engineering/introducing-glb/) and
 [Cloudflare](https://blog.cloudflare.com/high-availability-load-balancers-with-maglev/)
 have interesting articles on their load balancers. Normally, at the scale you're
 at and approaching, the worst you'll need is a proxy like Nginx, HAProxy, Caddy,
@@ -126,9 +128,9 @@ Briefly:
 <!-- notes -->
 
 For longer-running work, it can make sense to process them asynchronously. This
-can be done with a message queue. This way your server remains responsive
-while processing can happen in the background. At high load the queue can
-get long, but then as load falls off the queue can be processed faster.
+can be done with a message queue. This way your server remains responsive while
+processing can happen in the background. At high load the queue can get long,
+but then as load falls off the queue can be processed faster.
 
 <!-- vslide -->
 
@@ -146,6 +148,7 @@ the jobs that are failing and resolve them.
 #### Sharding
 
 <!-- notes -->
+
 Another common way to scale and load balance is to shard your data. This is not
 something you should do from the beginning, but when you get to the point where
 you're overwhelming a single database, it's an option.
@@ -155,4 +158,5 @@ called a shard. You then can route requests to the appropriate shard based on
 the data you're querying. The way I've seen this done is to split up data into
 ranges, and then route requests to the appropriate shard based on the range of
 the data you're querying.
+
  <!-- vslide -->
