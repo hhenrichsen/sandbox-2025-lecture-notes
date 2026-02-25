@@ -34,7 +34,7 @@ _by Hunter Henrichsen_
   - [Common Elements](#common-elements)
   - [Common Architectures](#common-architectures)
 - [Random Advice](#random-advice)
-  - [The 50% Rule](#the-50%25-rule)
+  - [The 50% Rule](#the-50-rule)
   - [Infrastructure](#infrastructure)
   - [Chasing Trends](#chasing-trends)
   - [On Asking Questions](#on-asking-questions)
