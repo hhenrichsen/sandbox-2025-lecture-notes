@@ -1,3 +1,30 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [23 - Career Day](#23---career-day)
+  - [Hunter's Career](#hunters-career)
+    - [Year 1 - Curious IC](#year-1---curious-ic)
+    - [Year 2 - Team Lead](#year-2---team-lead)
+    - [Year 3 - Senior Engineer](#year-3---senior-engineer)
+    - [Year 4 - Engineering Manager](#year-4---engineering-manager)
+  - [Job Search Advice](#job-search-advice)
+    - [On Technical Interviews](#on-technical-interviews)
+    - [On Behavioral Interviews](#on-behavioral-interviews)
+    - [On Doing Your Research](#on-doing-your-research)
+    - [On Passion](#on-passion)
+    - [On Asking Questions](#on-asking-questions)
+  - [Career Advice](#career-advice)
+    - [On You Vs Your Work](#on-you-vs-your-work)
+    - [On Setting Your Standards](#on-setting-your-standards)
+    - [On Leadership and Initiative](#on-leadership-and-initiative)
+  - [Structuring a Company](#structuring-a-company)
+    - [On Being a Founder](#on-being-a-founder)
+    - [On Picking a Target Industry](#on-picking-a-target-industry)
+    - [On Forming and Scaling Teams](#on-forming-and-scaling-teams)
+    - [On Commitment](#on-commitment)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # 23 - Career Day
 
 <!-- slide -->
