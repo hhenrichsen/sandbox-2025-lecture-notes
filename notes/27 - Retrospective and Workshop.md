@@ -98,28 +98,31 @@ people:
 ### Going Forward: Code Quality
 
 <!-- notes -->
+
 Most of you have been vibe coding for awhile now, and I think that's great; we
-talked at length earlier in the year about how iterating quickly, even 
-without writing code, is important.
+talked at length earlier in the year about how iterating quickly, even without
+writing code, is important.
 
 We're at the end of the year now.
 
 We'll talk a little bit later about ADRs and things you all would have changed
 if you could start over. But I wanted to start with talking about code and
 project quality, especially as some of you are getting to the point where you
-have steady clients and can start to consider "oh, we could make a living off
-of this."
+have steady clients and can start to consider "oh, we could make a living off of
+this."
 
 To start, I wanted to mention a quote from Martin Fowler:
+
 <!-- vslide -->
 
-> **Any fool can write code that a computer can understand. Good programmers write code that humans can understand.**
+> **Any fool can write code that a computer can understand. Good programmers
+> write code that humans can understand.**
 
 – Martin Fowler<!-- .element: class="attribution" -->
 
 <!-- notes -->
 
-This is your job as the architects and founders of your projects. You need to 
+This is your job as the architects and founders of your projects. You need to
 set the patterns and abstractions that will determine the ability of your
 codebase to be maintained and extended by others, hopefully for years to come.
 
@@ -136,9 +139,9 @@ He mentions that before you can start refactoring, you need a couple things:
 
 There's still a place for doing large, sweeping changes, and AI agents make it
 easier to generate all the code for that. But then you have to go and verify
-that. I like Fowler's 
+that. I like Fowler's
 ["preparatory refactoring"](https://martinfowler.com/articles/preparatory-refactoring-example.html)
-idea on this, 
+idea on this,
 [explained by Kent Beck](https://x.com/KentBeck/status/250733358307500032?lang=en):
 
 > **For each desired change, make the change easy (warning: this may be hard),
@@ -149,7 +152,8 @@ idea on this,
 <!-- notes -->
 
 There are approaches that help to do this that become aspirations for a project.
-Mike Mason calls some of them out [here](https://www.thoughtworks.com/insights/blog/generative-ai/machines-rising-developers-hold-keys):
+Mike Mason calls some of them out
+[here](https://www.thoughtworks.com/insights/blog/generative-ai/machines-rising-developers-hold-keys):
 
 - Clear and Expressive Naming
 - Reducing Duplicate Code
@@ -179,40 +183,48 @@ working on your project at this point, and know your pain points.
 If you're not already, review a full PR worth of code yourself this week. Take
 the chance to write down what you already think a module in your code is doing
 (ideally one you didn't write yourself), then read through and compare to your
-predictions. 
+predictions.
 
 <!-- vslide -->
 
 ### Small Changesets
 
 <!-- notes -->
+
 I've mentioned this before, but the ideal way to make changes to your codebase
-is small, atomic changes. You want to be able to revert changes and have the 
+is small, atomic changes. You want to be able to revert changes and have the
 system in a working state.
 
 This yields itself well to both a CI/CD pipeline, and splitting tasks into small
 chunks that can be written by AI, then reviewed quickly by a human.
+
 <!-- vslide -->
 
 ### Discussion: ADRs
 
 <!-- notes -->
+
 What was the worst architectural decision you've made this year? Let's break
 into groups and write up an [ADR](https://adr.github.io/) for it.
+
 <!-- vslide -->
 
 ### Discussion: If You Could Start Over
 
 <!-- notes -->
+
 What would you change if you could start over? What would you do differently?
+
 <!-- vslide -->
 
 ### Quality: 12 Factor App
 
 <!-- notes -->
-12 Factor App is a great way to think about your project. It's a set of 12
-best practices that help you to build a project that is easy to deploy, scale,
-and maintain.
+
+12 Factor App is a great way to think about your project. It's a set of 12 best
+practices that help you to build a project that is easy to deploy, scale, and
+maintain.
 
 You can find the 12 Factor App website [here](https://12factor.net/).
+
  <!-- vslide -->
